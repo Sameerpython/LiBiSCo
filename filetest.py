@@ -45,6 +45,7 @@ atom_seen=set()
 finalset=set()
 combines_listdata=[]
 ATMA_listdata=[]
+appended_lig_tabledic={}
 
 for id,link in mydictcheck.iteritems():
    #print link, id	   
@@ -101,7 +102,7 @@ for id,link in mydictcheck.iteritems():
 #converting finalset to a list function
    list_finalset=list(finalset)
    lig_tabledic={}
-   appended_lig_tabledic={}
+#   appended_lig_tabledic={}
    #print "RING C", id,lig 
 
    ATOM=[i for e in atom_C  for i in list_finalset if e in i]   
@@ -126,7 +127,7 @@ for id,link in mydictcheck.iteritems():
                #lig_tabledic={'%s'%id:lig_dict_new}
                #print lig_tabledic
    #for dickey, dicvalue in appended_lig_tabledic:
-               appended_lig_tabledic['%s'%id]=lig_dict_new 
+   appended_lig_tabledic['%s'%id]=lig_dict_new 
    print "check update", appended_lig_tabledic     
    #appended_lig_tabledic.update(lig_tabledic) 
    #print "check update", appended_lig_tabledic            
