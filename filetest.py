@@ -30,14 +30,7 @@ pd.set_option('display.max_colwidth', -1)
 
 
 
-print "Content-type:text/html\r\n\r\n"
-print '<html>'
-print '<head>'
-print '<title>Hello Word - First CGI Program</title>'
-print '</head>'
-print '<body>'
 
-########################
 atom_C=sorted(['ND','C1D','C2D','C3D','C4D','CMD'])
 mydictcheck={'3aek': ['http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetLigInt.pl?pdb=3aek&ligtype=02&ligno=01'], '2ynm': ['http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetLigInt.pl?pdb=2ynm&ligtype=06&ligno=01']}
 
@@ -119,7 +112,7 @@ for id,link in mydictcheck.iteritems():
    size=int(len(ATMA_listdata)/2)
    df_F1=pd.DataFrame(np.array(ATMA_listdata).reshape(size,2),columns=['LIGAND ATOM','RESIDUES FOR PDB %s'%id])
    groupedF1=df_F1.groupby(['LIGAND ATOM'])['RESIDUES FOR PDB %s'%id].apply(lambda x: ', '.join(x.astype(str))).reset_index()
-   print "<td>" 
+   
    print groupedF1.to_html(justify='center') 
    lig_dict=groupedF1.to_dict('split')
    lig_dict_new={}
@@ -138,7 +131,7 @@ for id,link in mydictcheck.iteritems():
    #appended_lig_tabledic.update(lig_tabledic) 
    #print "check update", appended_lig_tabledic            
                
-   print "</td>"
+   
 
    lresidue=[]
    latom=[]
@@ -156,8 +149,7 @@ for id,link in mydictcheck.iteritems():
 
 
 
-print '</body>'
-print '</html>'
+
 
 
             
