@@ -6,8 +6,11 @@ The input used in LiBiSCo is a PDB ID or several IDs of a protein-ligand complex
 How to run the server:
 
 1)Install XAMPP
+
 2)Create a folder (For eg. LiBiSCo) inside htdoc folder within XAMPP.
+
 3)Place all the python scripts and image files within LiBiSCo folder.
+
 
 File details:
 
