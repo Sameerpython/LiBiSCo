@@ -11,11 +11,11 @@ How to run the server:
 
 File details:
 
-1. The HomePage.py provides two options for the user to analyse their protein-ligand interactions.
+The HomePage.py provides two options for the user to analyse their protein-ligand interactions.
 	a) Ligand Based Analysis
-  b) Cofactor Substructure Based Analysis
+        b) Cofactor Substructure Based Analysis
 
-Ligand Based Analysis:
+a) Ligand Based Analysis:
 
 First the user need to enter PDB codes (for eg. 3WXB,3P19) in the text box provided in the Home page (HomePage.py).  
 
@@ -24,7 +24,7 @@ Second, the user selects the ligand of interest among the list of bound ligands 
 Finally, the results will be provided as tables for ligand–residue interaction (both bonded and non-bonded), color-coded interaction based on physico-chemical properties, and WebLogo for amino acids bound to each ligand atom (Interaction_Result.py).
 
 
-Cofactor Substructure Based Analysis:
+b) Cofactor Substructure Based Analysis:
 
 First, from the drop-down menu, the user need to select the ligand (cofactor) of interest (HomePage.py). For eg. Select NAD from the dropdown menu and press submit button.
 
