@@ -7,6 +7,7 @@ RUN apt-get update
 RUN apt-get install -y net-tools
 RUN apt-get install -y wget 
 RUN apt-get install -y sudo
+RUN apt-get install -y python2.7
 
 RUN mkdir -p /opt/bindingdata
 WORKDIR /opt/bindingdata				
@@ -17,6 +18,13 @@ RUN sudo /opt/bindingdata/xampp-linux-x64-7.3.9-0-installer.run
 RUN mkdir /opt/lampp/htdocs/LiBiSCo
 WORKDIR /opt/lampp/htdocs/LiBiSCo
 ADD *.py /opt/lampp/htdocs/LiBiSCo/
-RUN ls -l /opt/lampp/htdocs/LiBiSCo
+RUN chmod +x /opt/lampp/htdocs/LiBiSCo/*.py
 
+EXPOSE 80 
+RUN /opt/lampp/xampp start
+CMD sh 
+# write a startup script
+#RUN echo '/opt/lampp/xampp start' >> /startup.sh
+#RUN echo '/usr/bin/supervisord -n' >> /startup.sh
 
+#CMD ["sh", "/startup.sh"]
