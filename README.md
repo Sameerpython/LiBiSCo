@@ -41,3 +41,4 @@ Finally, the results will be provided as tables for each of the substructure of 
 
 * docker build -t bindingdata .
 * docker run -p 80:80 bindingdata:latest
+* docker run -p 80:80 -ti bindingdata:latest
