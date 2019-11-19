@@ -175,9 +175,9 @@ print "<h2> Interaction Information </h2>"
 print "</div>"
 
 
-if form.getvalue('ligatom'):
-    lig_content = form.getvalue('ligatom')
-Ligscompare=list(lig_content.split(','))
+#if form.getvalue('ligatom'):
+#    lig_content = form.getvalue('ligatom')
+#Ligscompare=list(lig_content.split(','))
 
 # Information of the selected ligands and PDB ids from LigPage.py
 variable = ""
@@ -191,7 +191,7 @@ for key in form.keys():
         value = str(form.getvalue(variable))
         value_dict.setdefault('%s'%variable,[]).append(value)
         r += "<p>"+ variable +", "+ value +"</p>\n"
-print "<p style='font-size:20px; color:blue'> The Results are for the following selected PDBID's and Ligands: ",', '.join("{}:{}".format(k,v) for k,v in value_dict.items()),"</p>","<br/>"
+print "<p style='font-size:20px; color:blue'> Results for the selected PDBID's and Ligands: ",', '.join("{}:{}".format(k,v) for k,v in value_dict.items()),"</p>","<br/>"
 
 #PDBSUM URLs for connection
 pdbsum_URL="http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="
@@ -384,12 +384,12 @@ valuesoflengthyKEY=sorted(list(set(valueoflengthyKEY)))
 
 
 #Merging of the atoms list for each PDB id into a a single list
-listofcompiledatoms=[]
+listofAllatoms=[]
 for k2,v2 in atoms_commoncomp.iteritems():
     for l2 in v2:
         atomitems=''.join(l2)
-        listofcompiledatoms.append(atomitems)
-finallistofcompiledatoms=sorted(list(set(listofcompiledatoms)))
+        listofAllatoms.append(atomitems)
+finallistofAllatoms=sorted(list(set(listofAllatoms)))
 #End of Merging of the atoms list for each PDB id into a a single list
 
 
@@ -405,7 +405,7 @@ if len(common_intersectionfinal)==0:
         for i in k:
             pdb= k
             key= v
-            for c1 in finallistofcompiledatoms:
+            for c1 in finallistofAllatoms:
                 for b1 in v:
                     if c1 == b1:
                         if c1 not in listprint:
@@ -599,25 +599,25 @@ else:
                                     CommonH_combine_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in CommonH_combine_Lig_Res_distance.items()}
                                     CommonH_distance_Lig_dict['%s'%id]=CommonH_combine_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
 
-                                if atm in Ligscompare:
-                                    LigAtom_optiongraphdic_H.setdefault('%s'%atm,[]).append(resnum)#creating dictionary with all lig atom and residues for physio and weblogo
-                                    LigAtom_option_Lig_Res_H.setdefault('%s'%atm,[]).append(resnum)#creating dictionary with all lig atom and residues for table
-                                    LigAtom_option_H_uniquify= {k:list(set(j)) for k,j in LigAtom_option_Lig_Res_H.items()}
-                                    LigAtom_option_H_Lig_Resdict['%s'%id]=LigAtom_option_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
+ #                               if atm in Ligscompare:
+ #                                   LigAtom_optiongraphdic_H.setdefault('%s'%atm,[]).append(resnum)#creating dictionary with all lig atom and residues for physio and weblogo
+ #                                   LigAtom_option_Lig_Res_H.setdefault('%s'%atm,[]).append(resnum)#creating dictionary with all lig atom and residues for table
+ #                                   LigAtom_option_H_uniquify= {k:list(set(j)) for k,j in LigAtom_option_Lig_Res_H.items()}
+ #                                   LigAtom_option_H_Lig_Resdict['%s'%id]=LigAtom_option_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
 
-                                    LigAtom_option_H_Lig_Res_distance.setdefault('%s'%atm,[]).append(distance)#creating dictionary with all lig atom and distance for table
-                                    LigAtom_option_H_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtom_option_H_Lig_Res_distance.items()}
-                                    LigAtom_option_H_distance_Lig_dict['%s'%id]=LigAtom_option_H_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+ #                                   LigAtom_option_H_Lig_Res_distance.setdefault('%s'%atm,[]).append(distance)#creating dictionary with all lig atom and distance for table
+ #                                   LigAtom_option_H_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtom_option_H_Lig_Res_distance.items()}
+ #                                   LigAtom_option_H_distance_Lig_dict['%s'%id]=LigAtom_option_H_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
                                     
-                                    if atm in H_common_intersectionfinal:
-                                       LigAtomOp_common_graphdic_H.setdefault('%s'%atm,[]).append(resnum)
-                                       LigAtomOp_Common_combine_Lig_Res_H.setdefault('%s'%atm,[]).append(resnum)#creating dictionary with common lig atom and residues for table
-                                       LigAtomOp_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in LigAtomOp_Common_combine_Lig_Res_H.items()}
-                                       LigAtomOp_CommonH_Lig_Resdict['%s'%id]=LigAtomOp_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+ #                                   if atm in H_common_intersectionfinal:
+ #                                      LigAtomOp_common_graphdic_H.setdefault('%s'%atm,[]).append(resnum)
+ #                                      LigAtomOp_Common_combine_Lig_Res_H.setdefault('%s'%atm,[]).append(resnum)#creating dictionary with common lig atom and residues for table
+ #                                      LigAtomOp_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in LigAtomOp_Common_combine_Lig_Res_H.items()}
+ #                                      LigAtomOp_CommonH_Lig_Resdict['%s'%id]=LigAtomOp_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
                                        
-                                       LigAtomOp_CommonH_combine_Lig_Res_distance.setdefault('%s'%atm,[]).append(distance)#creating dictionary with all lig atom and distance for table
-                                       LigAtomOp_CommonH_combine_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtomOp_CommonH_combine_Lig_Res_distance.items()}
-                                       LigAtomOp_CommonH_distance_Lig_dict['%s'%id]=LigAtomOp_CommonH_combine_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+ #                                      LigAtomOp_CommonH_combine_Lig_Res_distance.setdefault('%s'%atm,[]).append(distance)#creating dictionary with all lig atom and distance for table
+ #                                      LigAtomOp_CommonH_combine_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtomOp_CommonH_combine_Lig_Res_distance.items()}
+ #                                      LigAtomOp_CommonH_distance_Lig_dict['%s'%id]=LigAtomOp_CommonH_combine_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
                                        
 
 
@@ -661,25 +661,25 @@ else:
                                     CommonNH_distance_Lig_dict['%s'%id]=CommonNH_combine_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
 
 
-                                if atmNH in Ligscompare:
-                                    LigAtom_optiongraphdic_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for physio and weblogo
-                                    LigAtom_option_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
-                                    LigAtom_option_NH_uniquify= {k:list(set(j)) for k,j in LigAtom_option_Lig_Res_NH.items()}
-                                    LigAtom_option_NH_Lig_Resdict['%s'%id]=LigAtom_option_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
+#                                if atmNH in Ligscompare:
+ #                                   LigAtom_optiongraphdic_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for physio and weblogo
+ #                                   LigAtom_option_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
+ #                                   LigAtom_option_NH_uniquify= {k:list(set(j)) for k,j in LigAtom_option_Lig_Res_NH.items()}
+ #                                   LigAtom_option_NH_Lig_Resdict['%s'%id]=LigAtom_option_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
 
-                                    LigAtom_option_NH_Lig_Res_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and distance for table
-                                    LigAtom_option_NH_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtom_option_NH_Lig_Res_distance.items()}
-                                    LigAtom_option_NH_distance_Lig_dict['%s'%id]=LigAtom_option_NH_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+ #                                   LigAtom_option_NH_Lig_Res_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and distance for table
+ #                                   LigAtom_option_NH_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtom_option_NH_Lig_Res_distance.items()}
+ #                                   LigAtom_option_NH_distance_Lig_dict['%s'%id]=LigAtom_option_NH_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
                                     
-                                    if atmNH in NONHcommon_intersectionfinal:
-                                       LigAtomOp_common_graphdic_NH.setdefault('%s'%atmNH,[]).append(resnumNH)
-                                       LigAtomOp_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
-                                       LigAtomOp_Common_combine_Lig_Res_NH_uniquify={k:list(set(j)) for k,j in LigAtomOp_Common_combine_Lig_Res_NH.items()}
-                                       LigAtomOp_CommonNH_Lig_Resdict['%s'%id]=LigAtomOp_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
+ #                                   if atmNH in NONHcommon_intersectionfinal:
+ #                                      LigAtomOp_common_graphdic_NH.setdefault('%s'%atmNH,[]).append(resnumNH)
+ #                                      LigAtomOp_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
+ #                                      LigAtomOp_Common_combine_Lig_Res_NH_uniquify={k:list(set(j)) for k,j in LigAtomOp_Common_combine_Lig_Res_NH.items()}
+ #                                      LigAtomOp_CommonNH_Lig_Resdict['%s'%id]=LigAtomOp_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
                                        
-                                       LigAtomOp_CommonNH_combine_Lig_Res_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and distance for table
-                                       LigAtomOp_CommonNH_combine_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtomOp_CommonNH_combine_Lig_Res_distance.items()}
-                                       LigAtomOp_CommonNH_distance_Lig_dict['%s'%id]=LigAtomOp_CommonNH_combine_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+ #                                      LigAtomOp_CommonNH_combine_Lig_Res_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and distance for table
+ #                                      LigAtomOp_CommonNH_combine_Lig_Res_distance_uniquify= {k:list(set(j)) for k,j in LigAtomOp_CommonNH_combine_Lig_Res_distance.items()}
+ #                                      LigAtomOp_CommonNH_distance_Lig_dict['%s'%id]=LigAtomOp_CommonNH_combine_Lig_Res_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
 
 #emptying hbond lists and sets
 
@@ -725,7 +725,7 @@ def percentage(dictname):
     if bool(dictname):
         for key, value in dictname.iteritems():
             
-            for atom in finallistofcompiledatoms:
+            for atom in finallistofAllatoms:
             
                 for key1,value1 in value.iteritems():
                 #for i in dict1.keys():
@@ -742,13 +742,13 @@ def percentage(dictname):
             count_atmlist=list(set(atmlist))
         tabl['Percentage of Interaction']= (tabl.sum(axis=1)/Num_cols)*100
         tabl['Percentage of Interaction']=tabl['Percentage of Interaction'].round(2)
-        print "<br/>"," No. of Ligand atoms:", len(count_atmlist), "/",len(finallistofcompiledatoms), "<br/>"
+        print "<br/>"," No. of ligand atoms:", len(count_atmlist), "/",len(finallistofAllatoms), "<br/>"
         print tabl.T.to_html(justify='center'),"<br/>"
         #print tabl.style.background_gradient(cmap='summer')
         #sns.heatmap(tabl['Percentage of Interaction'], annot=True)
         Highest_value= tabl['Percentage of Interaction'][tabl['Percentage of Interaction']==tabl['Percentage of Interaction'].max()]
         Highest_value=Highest_value.to_dict()
-        print "Highest percenrage of Interactions identified","<br/>"
+        print "Highest percentage of interactions identified","<br/>"
         Max_tabl=pd.DataFrame(Highest_value.items())
         Max_tabl.columns = ['Ligand Atom', 'Percentage']
         Max_tabl.rename(index={0: 'Highest'})
@@ -801,42 +801,28 @@ print "<p align='center'>#######################################################
 print "<p style='font-size:20px; color:blue' align='center'>H - Bonded Interaction","</p>"
 print "<p align='center'>################################################################"  ,"</p>" 
 
-print Ligscompare
+#print Ligscompare
 
-print "<button class='collapsible'>I. Compiled Bonded Interactions - Click here for Basic Statistics Information </button>"#Start of click drop down
+print "<button class='collapsible'>I. All Bonded Interactions - click here for basic statistical information </button>"#Start of click drop down
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
 
 
 
-if 'None' in Ligscompare:
-    print Ligscompare
     
-    print " Number of PDB IDs:", len(AllH_Lig_Resdict.keys()),"/", len(PDBID_LIST), "<br/>"
-    
-    if bool(AllH_Lig_Resdict):
-        print "[1: Intercating and 0: Not Interacting]" , "<br/>"
-        #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofcompiledatoms), "<br/>"
-        percentage(AllH_Lig_Resdict) 
-    
-    print "<br/>"    
-    print "Hydrogen bond distance"
-    if bool(AllH_distance_Lig_dict):
-        distance_calc(AllH_distance_Lig_dict) 
+print " Number of PDB IDs:", len(AllH_Lig_Resdict.keys()),"/", len(PDBID_LIST), "<br/>"
 
-else:
-    print " Number of PDB IDs:", len(LigAtom_option_H_Lig_Resdict.keys()),"/", len(PDBID_LIST), "<br/>"
-    
-    if bool(LigAtom_option_H_Lig_Resdict):
-        print "[1: Intercating and 0: Not Interacting]" , "<br/>"
-        #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofcompiledatoms), "<br/>"
-        percentage(LigAtom_option_H_Lig_Resdict) 
-    
-    print "<br/>"    
-    print "Hydrogen bond distance"
-    if bool(LigAtom_option_H_distance_Lig_dict):
-        distance_calc(LigAtom_option_H_distance_Lig_dict)    
+if bool(AllH_Lig_Resdict):
+    print "[1: Interacting and 0: Non interacting]" , "<br/>"
+    #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofAllatoms), "<br/>"
+    percentage(AllH_Lig_Resdict) 
+
+print "<br/>"    
+print "Hydrogen bond distance"
+if bool(AllH_distance_Lig_dict):
+    distance_calc(AllH_distance_Lig_dict) 
+
 print "</div>"#End of click drop down
 
 
@@ -850,28 +836,17 @@ print """
      <div class="module">
    
 """# initialization of first grid and column
-if 'None' in Ligscompare:
-    if bool(AllH_Lig_Resdict):
-        
-        #print "All Hydrogen bondong details"
-        print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
-        #df=pd.DataFrame.from_dict(AllH_Lig_Resdict)
-        #print df.style.applymap(lambda x: 'color: red' if pd.isnull(x) else '').to_html(justify='center')
-    else:
-        print "All Hydrogen bondong details"
-        print "<p No Hydrogen bonded interactions observed /p>"
-
-else:
+if bool(AllH_Lig_Resdict):
     
-    if bool(LigAtom_option_H_Lig_Resdict):
-        
-        #print "All Hydrogen bondong details"
-        print pd.DataFrame.from_dict(LigAtom_option_H_Lig_Resdict).to_html(justify='center')
-        #df=pd.DataFrame.from_dict(AllH_Lig_Resdict)
-        #print df.style.applymap(lambda x: 'color: red' if pd.isnull(x) else '').to_html(justify='center')
-    else:
-        print "All Hydrogen bondong details"
-        print "<p No Hydrogen bonded interactions observed /p>"
+    #print "All Hydrogen bondong details"
+    print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+    #df=pd.DataFrame.from_dict(AllH_Lig_Resdict)
+    #print df.style.applymap(lambda x: 'color: red' if pd.isnull(x) else '').to_html(justify='center')
+else:
+    print "All Hydrogen bondong details"
+    print "<p No Hydrogen bonded interactions observed /p>"
+
+
 
 print """
         </div>
@@ -895,15 +870,15 @@ if bool(All_graphdic_H):
         graphdic1_All_H.setdefault('%s'%k_all,[]).append(', '.join(samp_all))
         templist4graph_H=[]
     
-    length_listofcompiledresidues_all_H=[]
+    length_listofAllresidues_all_H=[]
     
     
     for key_all_H,value1_all_H in graphdic1_All_H.iteritems():    
         for i in value1_all_H:
             valu_all_H=i.split(', ')
-            length_listofcompiledresidues_all_H.append(len(valu_all_H))
+            length_listofAllresidues_all_H.append(len(valu_all_H))
             
-    length_ofcell_all_H=max(length_listofcompiledresidues_all_H)
+    length_ofcell_all_H=max(length_listofAllresidues_all_H)
     
     print """
     
@@ -912,11 +887,11 @@ if bool(All_graphdic_H):
        
     """# initialization of second column
     
-    #print "<p style='font-size:20px; color:blue'> The compiled information of All Residues: H Bonded","</p>"
+    #print "<p style='font-size:20px; color:blue'> The All information of All Residues: H Bonded","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'> List of All Residues</th>"% length_ofcell_all_H
+    print "<th  colspan='%d'> List of all residues</th>"% length_ofcell_all_H
     print "</tr>"
     
     for key in sorted(graphdic1_All_H.iterkeys()):
@@ -952,7 +927,7 @@ if bool(All_graphdic_H):
     print "</table>"
 
 else:
-    print "No Compiled List for bonded interaction is available"
+    print "No All List for bonded interaction is available"
     
 print """
         </div>
@@ -1048,10 +1023,10 @@ print """
 """#closing of first grid and third column
 
 #print "<p align='center'>################################################################","</p>"
-#print "<p style='font-size:20px; color:blue' align='center'>Common Bonded Interaction","</p>"
+#print "<p style='font-size:20px; color:blue' align='center'>Common bonded interactions ","</p>"
 #print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>II. Common Bonded Interaction- Click here for Basic Statistics Information </button>"
+print "<button class='collapsible'>II. Common bonded interactions - click here for basic statistical information </button>"
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
@@ -1059,8 +1034,8 @@ print "<p style='font-size:20px; color:black' align='center'>"
 print " Number of PDB IDs:", len(CommonH_Lig_Resdict.keys()),"/", len(PDBID_LIST), "<br/>"
 
 if bool(CommonH_Lig_Resdict):
-    print "Statistics of Bonded Intercations (1: Intercating and 0: Not Interacting)" , "<br/>"
-#print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofcompiledatoms), "<br/>"
+    print "Statistics of Bonded Intercations (1: Interacting and 0: Non interacting)" , "<br/>"
+#print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofAllatoms), "<br/>"
     percentage(CommonH_Lig_Resdict) 
 else:
     print "<p No Common Bonded Intercations!! /p>"
@@ -1114,15 +1089,15 @@ if bool(common_graphdic_H):
         graphdic1_Common_H.setdefault('%s'%k_all,[]).append(', '.join(samp_all))
         templist4graph_H=[]
     
-    length_listofcompiledresidues_common_H=[]
+    length_listofAllresidues_common_H=[]
     
     
     for key_common_H,value1_common_H in graphdic1_Common_H.iteritems():    
         for i in value1_common_H:
             valu_common_H=i.split(', ')
-            length_listofcompiledresidues_common_H.append(len(valu_common_H))
+            length_listofAllresidues_common_H.append(len(valu_common_H))
             
-    length_ofcell_common_H=max(length_listofcompiledresidues_common_H)
+    length_ofcell_common_H=max(length_listofAllresidues_common_H)
     print """
     
        <div class="col-2-3">
@@ -1133,7 +1108,7 @@ if bool(common_graphdic_H):
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>List of Common Residues</th>"% length_ofcell_common_H
+    print "<th  colspan='%d'>List of common residues</th>"% length_ofcell_common_H
     print "</tr>"
     for key in sorted(graphdic1_Common_H.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1168,7 +1143,7 @@ if bool(common_graphdic_H):
     print "</table>"
 
 else:
-    print "<p No Compiled Common Bonded Intercations for these structures!! /p>"
+    print "<p No All Common Bonded Intercations for these structures!! /p>"
     
 print """
         </div>
@@ -1266,10 +1241,10 @@ print """
 """#closing of second grid and third column
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Nonbonded Interaction","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Non-bonded Interaction","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>I. Compiled Nonbonded Interactions - Click here for Basic Statistics Information </button>"
+print "<button class='collapsible'>I. All non-bonded interactions - click here for basic statistical information </button>"
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
@@ -1278,8 +1253,8 @@ print "<p style='font-size:20px; color:black' align='center'>"
 print " Number of PDB IDs:", len(AllNH_Lig_Resdict.keys()),"/", len(PDBID_LIST), "<br/>"
 
 if bool(AllNH_Lig_Resdict):
-    print "Statistics of Bonded Intercations (1: Intercating and 0: Not Interacting)" , "<br/>"
-    #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofcompiledatoms), "<br/>"
+    print "Statistics of Bonded Intercations (1: Interacting and 0: Non interacting)" , "<br/>"
+    #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofAllatoms), "<br/>"
     percentage(AllNH_Lig_Resdict)
 
 print "<br/>"
@@ -1302,7 +1277,7 @@ if bool(AllNH_Lig_Resdict):
     #print "All Non-bondong details" 
     print pd.DataFrame.from_dict (AllNH_Lig_Resdict).to_html(justify='center') 
 else: 
-    print "<p No Nonbonded interaction in these structures"
+    print "<p No Non-bonded Interaction in these structures"
 
 print """
         </div>
@@ -1324,15 +1299,15 @@ if bool(All_graphdic_NonH):
         graphdic1_All_NonH.setdefault('%s'%k_all,[]).append(', '.join(samp_all))
         templist4graph_NH=[]
     
-    length_listofcompiledresidues_all_NonH=[]
+    length_listofAllresidues_all_NonH=[]
     
     
     for key_all_H,value1_all_H in graphdic1_All_NonH.iteritems():    
         for i in value1_all_H:
             valu_all_H=i.split(', ')
-            length_listofcompiledresidues_all_NonH.append(len(valu_all_H))
+            length_listofAllresidues_all_NonH.append(len(valu_all_H))
             
-    length_ofcell_all_NonH=max(length_listofcompiledresidues_all_NonH)
+    length_ofcell_all_NonH=max(length_listofAllresidues_all_NonH)
     
     print """
     
@@ -1344,7 +1319,7 @@ if bool(All_graphdic_NonH):
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>List of All Residues</th>"% length_ofcell_all_NonH
+    print "<th  colspan='%d'>List of all residues</th>"% length_ofcell_all_NonH
     print "</tr>"
     
     for key in sorted(graphdic1_All_NonH.iterkeys()):
@@ -1379,7 +1354,7 @@ if bool(All_graphdic_NonH):
     print "</table>"
 
 else:
-    print "<p No compiled list of nonbonded residues /p>"
+    print "<p No All list of nonbonded residues /p>"
     
     
 print """
@@ -1485,7 +1460,7 @@ print """
 #print "<p style='font-size:20px; color:blue' align='center'>Common Nonbonding Interaction","</p>"
 #print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>II. Common Nonbonded Interactions - Click here for Basic Statistics Information </button>"
+print "<button class='collapsible'>II. Common non-bonded interactions - click here for basic statistical information </button>"
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
@@ -1494,8 +1469,8 @@ print "<p style='font-size:20px; color:black' align='center'>"
 print " Number of PDB IDs:", len(CommonNH_Lig_Resdict.keys()),"/", len(PDBID_LIST), "<br/>"
 
 if bool(CommonNH_Lig_Resdict):
-    print "Statistics of Bonded Intercations (1: Intercating and 0: Not Interacting)" , "<br/>"
-    #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofcompiledatoms), "<br/>"
+    print "Statistics of Bonded Intercations (1: Interacting and 0: Non interacting)" , "<br/>"
+    #print " Number of Ligand atoms:", Tot_Atom_count/len(finallistofAllatoms), "<br/>"
     percentage(CommonNH_Lig_Resdict)
 
 print "<br/>"
@@ -1518,7 +1493,7 @@ if bool(CommonNH_Lig_Resdict):
     print pd.DataFrame.from_dict(CommonNH_Lig_Resdict).to_html(justify='center')
 
 else:
-    print "<p No Common Nonbonded INteractions! /p>"
+    print "<p No Common non-bonded interactions! /p>"
 
 
 print """
@@ -1542,15 +1517,15 @@ if bool(common_graphdic_NonH):
         graphdic1_Common_NonH.setdefault('%s'%k_all,[]).append(', '.join(samp_all))
         templist4graph_NH=[]
     
-    length_listofcompiledresidues_Common_NonH=[]
+    length_listofAllresidues_Common_NonH=[]
     
     
     for key_all_H,value1_all_H in graphdic1_Common_NonH.iteritems():    
         for i in value1_all_H:
             valu_all_H=i.split(', ')
-            length_listofcompiledresidues_Common_NonH.append(len(valu_all_H))
+            length_listofAllresidues_Common_NonH.append(len(valu_all_H))
             
-    length_ofcell_Common_NonH=max(length_listofcompiledresidues_Common_NonH)
+    length_ofcell_Common_NonH=max(length_listofAllresidues_Common_NonH)
     
     print """
     
@@ -1562,7 +1537,7 @@ if bool(common_graphdic_NonH):
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues</th>"% length_ofcell_Common_NonH
+    print "<th  colspan='%d'>List of all residues</th>"% length_ofcell_Common_NonH
     print "</tr>"
     
     for key in sorted(graphdic1_Common_NonH.iterkeys()):
@@ -1597,7 +1572,7 @@ if bool(common_graphdic_NonH):
     print "</table>"
 
 else:
-    print "<p No Compiles list of Nonbonded Interactions /p>"
+    print "<p No Compiles list of Non-bonded Interactions /p>"
 print """
         </div>
     </div>

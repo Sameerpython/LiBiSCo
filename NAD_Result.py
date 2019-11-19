@@ -21,6 +21,9 @@ from Bio import motifs
 
 from Bio.Alphabet import IUPAC
 from zipfile import ZipFile
+from collections import OrderedDict
+matplotlib.use('Agg')
+pd.set_option('display.max_colwidth', -1)
 
 # Create instance of FieldStorage
 form = cgi.FieldStorage()
@@ -176,9 +179,10 @@ print "<p style='font-size:20px; color:blue'>  The Results are for the following
 
 pdbsum_URL="http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="
 pdbsum_URL2="&template=links.html"
+ebiurl="www.ebi.ac.uk"
 
 #DIctionary and List
-pdbsum_dict={}
+pdbsum_dict=OrderedDict()
 PDBID_LIST=[]
 
 #Title for Page
@@ -194,109 +198,38 @@ for ids,lig in value_dict.iteritems():
 #print "PDBSUMDICT", pdbsum_dict,"<br/>","<br/>"
 
 #creating a list for PDB ids
-for id,url in pdbsum_dict.iteritems():
-        PDBID_LIST.append(id)
+for ids1,url in pdbsum_dict.iteritems():
+        PDBID_LIST.append(ids1)
 #print "PDBID LIST", PDBID_LIST, "<br/>"
 
 #Extracting the Href links from PDBSum home page for the selected PDB ids and Ligands using BeautifulSoup
 
-litems=[]
-new=[]
-items2=[]
-new1=[]
-lig_link=[]
-finalLIG_link=[]
-liginte_set=set()
-ligintelist=[]
-link_set=set()
+mydictcheck=OrderedDict()
 
-for id,url in pdbsum_dict.iteritems():
-    #print id, url, "<br/>"
-    for link in url:
-        html_page=requests.get(link)
-        soup = BeautifulSoup(html_page.text,'html.parser')
-        ligand_name_items=soup.find_all('a')
-        for items in ligand_name_items:
-            name=items.contents[0]
-            links='www.ebi.ac.uk' + items.get('href')
-            text=str(name)+ " " + str(links)
-            litems.append(text)
-
-#Looping over the extracted URLs from PDBSum and appending into a lIst called New
-for x in litems:
-        x=x.strip()
-        new.append(x)
-#print new
-
-#Looping over Ligand and PDBSum Urls (from above step) to extract the PDBSUm URL for the seleted Ligand Page in PDBSUm. The Ligand Page URL is now as a SET data type
-ligand_urlLIST=[]
-for lig in lig_sel:
-    #print "LIGAND", lig, "<br/>"
-    for y in new:
-        lig= ''.join(lig)
-        if y.startswith(lig):#y=y.split()
-            y=y.split()
-            link=y[1]
-            link1="http://"+link
-            #print link1
-            ligand_urlLIST.append(link1)
-            link_set.add(link1)
-    link_setlist=list(link_set)
-#print ligand_urlLIST
-
-#print "SET",link_setlist, "<br/>"
-
-#Using Beautifulsoup to extract all the links from PDBSUM Ligand interaction Page for each of the PDB ids.
-#print PDBID_LIST
-PDBID_URL_dict=zip(PDBID_LIST,ligand_urlLIST)
-LiginteractPage=dict(PDBID_URL_dict)
-#print "what1", LiginteractPage, "<br/>"
-#print "what2", PDBID_URL_dict
-
-for pdbid,pdbsumlink in LiginteractPage.iteritems():
-        links=list(LiginteractPage.viewvalues())
-        for y in links:
-                html_page2=requests.get(y)
-                soup2 = BeautifulSoup(html_page2.text,'html.parser')
-                ligand_name_items1=soup2.find_all('a')
-
-#Looping over all the href links from PDBSUM ligand intercation page to extract 
-#URL(Final page for extracting atom details) for the atom based interaction for PDB ids with ligands
-
-                for items in ligand_name_items1:
-                        name=items.contents[0]
-                        links='www.ebi.ac.uk' + items.get('href')
-                        text=str(links)
-                        items2.append(text)
-
-                for i in items2:
-#                       print i
-                        final=i.split()
-                        final=''.join(final)
-                        #print final, "<br/>"
-                        finalLIG_link.append(final)
-                        lastitem=finalLIG_link[-1]
-                        lastitem="http://"+lastitem
-#                print lastitem,"<br/>"
-
-                if lastitem not in ligintelist:
-                        ligintelist.append(lastitem)
-                liginte_set.add(lastitem)
-        liginte_list=list(liginte_set)
-#print "LIST", (ligintelist),"<br/>"
-PDBID_INTURL_dict=zip(PDBID_LIST,ligintelist)
-pdbsum_dict1=dict(PDBID_INTURL_dict)
-for id,link in pdbsum_dict1.iteritems():
-        links=list(pdbsum_dict1.viewvalues())
-        PDBID=list(pdbsum_dict1.viewkeys())
-#print "HI LINKS CHECK for SPACE", links,"<br/>"
-#print "PDBIDs", PDBID,"<br/>"
-
-Number_of_Ids=len(PDBID)
-#FInal DIctionary with PDBID and Ligplot URL for extracting intercation details
-mydictcheck={}
-for ids,links in zip(PDBID,ligintelist):
-        mydictcheck.setdefault('%s'%ids,[]).append(links)
+for (lurl,murl), (lid,mid) in zip(pdbsum_dict.iteritems(), value_dict.iteritems()):
+    page = requests.get(murl[0])
+    
+    soup = BeautifulSoup(page.content, 'html.parser')
+    for h in soup.find_all('a', class_='menuClass' , attrs={"onmouseover" : "return overlib('Go to Ligands page for this ligand', WRAP);"}):
+        #print h
+        for i in h:
+            if i.strip()==mid[0]:
+                linkfin="http://" + ebiurl + str(h).split()[2].split('"')[1]
+                #mydictcheck1.setdefault(lid,ebiurl + str(h).split()[2].split('"')[1])
+                page2 = requests.get(linkfin)
+                soup2 = BeautifulSoup(page2.content, 'html.parser')
+                #print soup2
+                for h2 in soup2.find_all('td',  class_='ftxt'):
+                    for i2 in h2:
+                        #print i2
+                        fort=str(i2).split('"')
+                        for tan in fort:
+                            if 'List of interactions' in tan:
+                                #print "check2", fort[:2], "</br>"
+                                #print fort[1].split(), "</br>"
+                                finalliglink="http://www.ebi.ac.uk" + fort[1]
+                                #mydictcheck.setdefault(lid,"http://www.ebi.ac.uk" + fort[1])
+                                mydictcheck[lid]="http://www.ebi.ac.uk" + fort[1]
 
 ###############################################################################
         #SECTION OF FIDING COMMON LIGAND ATOMS
@@ -306,23 +239,26 @@ for ids,links in zip(PDBID,ligintelist):
 #selecting common ligand atoms that are hydrogen bonded in selected PDB structures
 H_printing = False
 H_atoms_commoncomp={}
-for H_pdbids,H_pdbidlinks in mydictcheck.iteritems():
-    for H_links_sel in H_pdbidlinks:
-        H_links_sel1=str(H_links_sel)
-        weblink=requests.get(H_links_sel1, stream=True)
-        for H_atomlines in weblink.iter_lines():
-            H_atomlines1=H_atomlines.strip()
-            
-            if H_atomlines1.startswith('Hydrogen bonds'):
-                H_printing = True
-            elif H_atomlines1.startswith('Non-bonded contacts'):
-                H_printing = False
-            if H_printing:
-                #print H_atomlines
-                if H_atomlines1.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
-                    H_atomlines2=H_atomlines1.split()
-                    H_atm_sel=H_atomlines2[8]
-                    H_atoms_commoncomp.setdefault('%s'%H_pdbids,[]).append(H_atm_sel)
+for H_pdbids,H_links_sel in mydictcheck.iteritems():
+#    for H_links_sel in H_pdbidlinks:
+    H_links_sel1=str(H_links_sel).replace("&amp;", "&")
+
+    weblink=requests.get(H_links_sel1)
+    for H_atomlines in weblink.iter_lines():
+        #print "H_atomlines", H_atomlines
+        
+        H_atomlines1=H_atomlines.strip()
+        
+        if H_atomlines1.startswith('Hydrogen bonds'):
+            H_printing = True
+        elif H_atomlines1.startswith('Non-bonded contacts'):
+            H_printing = False
+        if H_printing:
+            #print H_atomlines
+            if H_atomlines1.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
+                H_atomlines2=H_atomlines1.split()
+                H_atm_sel=H_atomlines2[8]
+                H_atoms_commoncomp.setdefault('%s'%H_pdbids,[]).append(H_atm_sel)
 
 H_atomsvalues_dict1=H_atoms_commoncomp.values()
 H_common_intersectionfinal=sorted(list(set.intersection(*map(set,H_atomsvalues_dict1))))
@@ -332,26 +268,25 @@ H_common_intersectionfinal=sorted(list(set.intersection(*map(set,H_atomsvalues_d
 #selecting common ligand atoms that are non-hydrogen bonded in selected PDB structures
 NONH_printing = False
 NONHatoms_commoncomp={}
-for NONHpdbids,NONHpdbidlinks in mydictcheck.iteritems():
-    
-    for NONHlinks_sel in NONHpdbidlinks:
-        NONHlinks_sel1=str(NONHlinks_sel)
-        weblink=requests.get(NONHlinks_sel1, stream=True)
-        for NONHatomlines in weblink.iter_lines():
-            NONHatomlines1=NONHatomlines.strip()
-            if NONHatomlines1.startswith('Non-bonded contacts'):
-                NONH_printing = True
+for NONHpdbids,NONHlinks_sel in mydictcheck.iteritems():
+#    for NONHlinks_sel in NONHpdbidlinks:
+    NONHlinks_sel1=str(NONHlinks_sel).replace("&amp;", "&")
+    weblink1=requests.get(NONHlinks_sel1)
+    for NONHatomlines in weblink1.iter_lines():
+        NONHatomlines1=NONHatomlines.strip()
+        #print NONHatomlines1
+        if NONHatomlines1.startswith('Non-bonded contacts'):
+            NONH_printing = True
+            
+        elif NONHatomlines1.startswith('Hydrogen bonds'):
+            NONH_printing = False
+        if NONH_printing:                
+            if NONHatomlines1.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
                 
-            elif NONHatomlines1.startswith('Hydrogen bonds'):
-                NONH_printing = False
-            if NONH_printing:                
-                #print atomlines1
-                if NONHatomlines1.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
-                    
-       
-                    NONHatomlines2=NONHatomlines1.split()
-                    NONHatm_sel=NONHatomlines2[8]
-                    NONHatoms_commoncomp.setdefault('%s'%NONHpdbids,[]).append(NONHatm_sel)
+   
+                NONHatomlines2=NONHatomlines1.split()
+                NONHatm_sel=NONHatomlines2[8]
+                NONHatoms_commoncomp.setdefault('%s'%NONHpdbids,[]).append(NONHatm_sel)
 
 NONHatomsvalues_dict1=NONHatoms_commoncomp.values()
 NONHcommon_intersectionfinal=sorted(list(set.intersection(*map(set,NONHatomsvalues_dict1))))                
@@ -634,413 +569,367 @@ printing = False
 
 
 for id,link in mydictcheck.iteritems():
-   #print link, id	   
-   links_sel=link[0]
-   link1= ''.join(str(links_sel))
-   res2=urllib.urlopen(str(link1))
-   html=res2.read()
-   #print html
-   for l in link:
-            ll=str(l)
-            r = requests.get(ll, stream=True)
-            for line in r.iter_lines():
-                    line=line.strip()
-                    if line.startswith('Hydrogen bonds'):
-                        printing = True
-                    elif line.startswith('Non-bonded contacts'):
-                        printing = False 
-                    if printing:
-                        if line.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
-                            #print "HB", line
-                            lineH=line.split()
-                            lignameH=lineH[9]
-                            atmH=lineH[8]
-                            resH=lineH[3]
-                            residuenumH=lineH[4]
-                            distanceH=lineH[12]
-                            resnumH=resH+residuenumH
+    link_rplace=str(link).replace("&amp;", "&")
+    r = requests.get(link_rplace, stream=True)
+    
+    for line in r.iter_lines():
+        line=line.strip()
+        if line.startswith('Hydrogen bonds'):
+            printing = True
+        elif line.startswith('Non-bonded contacts'):
+            printing = False 
+        if printing:
+            if line.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
+                #print "HB", line
+                lineH=line.split()
+                lignameH=lineH[9]
+                atmH=lineH[8]
+                resH=lineH[3]
+                residuenumH=lineH[4]
+                distanceH=lineH[12]
+                resnumH=resH+residuenumH
+#                              #appending each residue and its position to list called lresidue
+                lresidueH.append(resnumH)
+                #appending each ligand atom to list called latom
+                latomH.append(atmH)
+                #appending distance of each interaction to ldistance
+                ldistanceH.append(distanceH)
+                #creating a set for residue with position
+                residue_seenH.add(resnumH)
+                #creating a set for each ligand atom
+                atom_seenH.add(atmH)
+                #making a dictionary with list comtaining residue name and position
+                residueH.setdefault('%s'%id,[]).append(resnumH)
+                #making a dictionary with list comataing ligand atoms
+                atmnameH.setdefault('%s'%id,[]).append(atmH)
+                if atmH in Nicot:
+                    Nicot_lresidueH.append(resnumH)
+                    Nicot_latomH.append(atmH)
+                    Nicot_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for physio and weblogo
+                    Nicot_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
+                    Nicot_All_combine_Lig_Res_H_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_H.items()}
+                    Nicot_allH_Lig_Resdict['%s'%id]=Nicot_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                            
+                    Nicot_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                    Nicot_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_H_distance.items()}
+                    Nicot_allH_Lig_Resdict_distance['%s'%id]=Nicot_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+
+                    if atmH in H_common_intersectionfinal:
+                        Nicot_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
+                        Nicot_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
+                        Nicot_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_H.items()}
+                        Nicot_CommonH_Lig_Resdict['%s'%id]=Nicot_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+
+                        Nicot_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                        Nicot_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_H_distance.items()}
+                        Nicot_CommonH_Lig_Resdict_distance['%s'%id]=Nicot_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                if atmH in Ribitol:
+                    Ribitol_lresidueH.append(resnumH)
+                    Ribitol_latomH.append(atmH)
+                    Ribitol_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for physio and weblogo
+                    Ribitol_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
+                    Ribitol_All_combine_Lig_Res_H_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_H.items()}
+                    Ribitol_allH_Lig_Resdict['%s'%id]=Ribitol_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Ribitol_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                    Ribitol_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_H_distance.items()}
+                    Ribitol_allH_Lig_Resdict_distance['%s'%id]=Ribitol_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+
+                            
+                    if atmH in H_common_intersectionfinal:
+                        Ribitol_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
+                        Ribitol_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
+                        Ribitol_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_H.items()}
+                        Ribitol_CommonH_Lig_Resdict['%s'%id]=Ribitol_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Ribitol_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                        Ribitol_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_H_distance.items()}
+                        Ribitol_CommonH_Lig_Resdict_distance['%s'%id]=Ribitol_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+
+                if atmH in phosphate:
+                    phosphate_lresidueH.append(resnumH)
+                    phosphate_latomH.append(atmH)
+                    phosphate_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for physio and weblogo
+                    phosphate_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
+                    phosphate_All_combine_Lig_Res_H_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_H.items()}
+                    phosphate_allH_Lig_Resdict['%s'%id]=phosphate_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    phosphate_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                    phosphate_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_H_distance.items()}
+                    phosphate_allH_Lig_Resdict_distance['%s'%id]=phosphate_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                            
+                    if atmH in H_common_intersectionfinal:
+                        phosphate_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
+                        phosphate_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
+                        phosphate_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_H.items()}
+                        phosphate_CommonH_Lig_Resdict['%s'%id]=phosphate_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        phosphate_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                        phosphate_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_H_distance.items()}
+                        phosphate_CommonH_Lig_Resdict_distance['%s'%id]=phosphate_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+
+                if atmH in Ribose:
+                    Ribose_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
+                    Ribose_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
+                    Ribose_All_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_H.items()}
+                    Ribose_allH_Lig_Resdict['%s'%id]=Ribose_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Ribose_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                    Ribose_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_H_distance.items()}
+                    Ribose_allH_Lig_Resdict_distance['%s'%id]=Ribose_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                    if atmH in H_common_intersectionfinal:
+                        Ribose_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)                                    
+                        Ribose_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
+                        Ribose_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_H.items()}
+                        Ribose_CommonH_Lig_Resdict['%s'%id]=Ribose_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Ribose_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                        Ribose_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_H_distance.items()}
+                        Ribose_CommonH_Lig_Resdict_distance['%s'%id]=Ribose_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                            
+                if atmH in Adenin:
+                    Adenin_lresidueH.append(resnumH)
+                    Adenin_latomH.append(atmH)                                
+                    Adenin_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
+                    Adenin_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
+                    Adenin_All_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_H.items()}
+                    Adenin_allH_Lig_Resdict['%s'%id]=Adenin_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Adenin_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                    Adenin_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_H_distance.items()}
+                    Adenin_allH_Lig_Resdict_distance['%s'%id]=Adenin_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                    if atmH in H_common_intersectionfinal:
+                        Adenin_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)                                    
+                        Adenin_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
+                        Adenin_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_H.items()}
+                        Adenin_CommonH_Lig_Resdict['%s'%id]=Adenin_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Adenin_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
+                        Adenin_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_H_distance.items()}
+                        Adenin_CommonH_Lig_Resdict_distance['%s'%id]=Adenin_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                    
+        else:
+            if line.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
+                #print "NHB", line
+                lineNH=line.split()
+                lignameNH=lineNH[9]
+                atmNH=lineNH[8]
+                resNH=lineNH[3]
+                residuenumNH=lineNH[4]
+                distanceNH=lineNH[12]
+                resnumNH=resNH+residuenumNH
 #                               #appending each residue and its position to list called lresidue
-                            lresidueH.append(resnumH)
-                            #appending each ligand atom to list called latom
-                            latomH.append(atmH)
-                            #appending distance of each interaction to ldistance
-                            ldistanceH.append(distanceH)
-                            #creating a set for residue with position
-                            residue_seenH.add(resnumH)
-                            #creating a set for each ligand atom
-                            atom_seenH.add(atmH)
-                            #making a dictionary with list comtaining residue name and position
-                            residueH.setdefault('%s'%id,[]).append(resnumH)
-                            #making a dictionary with list comataing ligand atoms
-                            atmnameH.setdefault('%s'%id,[]).append(atmH)
-                            if atmH in Nicot:
-                                Nicot_lresidueH.append(resnumH)
-                                Nicot_latomH.append(atmH)
-                                Nicot_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for physio and weblogo
-                                Nicot_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
-                                Nicot_All_combine_Lig_Res_H_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_H.items()}
-                                Nicot_allH_Lig_Resdict['%s'%id]=Nicot_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
-                                
-                                Nicot_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                Nicot_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_H_distance.items()}
-                                Nicot_allH_Lig_Resdict_distance['%s'%id]=Nicot_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
+                lresidueNH.append(resnumNH)
+                #appending each ligand atom to list called latom
+                latomNH.append(atmNH)
+                #appending distance of each interaction to ldistance
+                ldistanceNH.append(distanceNH)
+                #creating a set for residue with position
+                residue_seenNH.add(resnumNH)
+                #creating a set for each ligand atom
+                atom_seenNH.add(atmNH)
+                #making a dictionary with list comtaining residue name and position
+                residueNH.setdefault('%s'%id,[]).append(resnumNH)
+                #making a dictionary with list comataing ligand atoms
+                atmnameNH.setdefault('%s'%id,[]).append(atmNH)
+                if atmNH in Nicot:
+                    Nicot_lresidueNH.append(resnumNH)
+                    Nicot_latomNH.append(atmNH)
+                    Nicot_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
+                    Nicot_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
+                    Nicot_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_NH.items()}
+                    Nicot_allNH_Lig_Resdict['%s'%id]=Nicot_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Nicot_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
+                    Nicot_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_NH_distance.items()}
+                    Nicot_allNH_Lig_Resdict_distance['%s'%id]=Nicot_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    if atmNH in NONHcommon_intersectionfinal:
+                        Nicot_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
+                        Nicot_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
+                        Nicot_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_NH.items()}
+                        Nicot_CommonNH_Lig_Resdict['%s'%id]=Nicot_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Nicot_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
+                        Nicot_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_NH_distance.items()}
+                        Nicot_CommonNH_Lig_Resdict_distance['%s'%id]=Nicot_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
 
-                                if atmH in H_common_intersectionfinal:
-                                    Nicot_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
-                                    Nicot_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
-                                    Nicot_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_H.items()}
-                                    Nicot_CommonH_Lig_Resdict['%s'%id]=Nicot_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                if atmNH in Ribitol:
+                    Ribitol_lresidueNH.append(resnumNH)
+                    Ribitol_latomNH.append(atmNH)
+                    Ribitol_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
+                    Ribitol_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
+                    Ribitol_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_NH.items()}
+                    Ribitol_allNH_Lig_Resdict['%s'%id]=Ribitol_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Ribitol_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
+                    Ribitol_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_NH_distance.items()}
+                    Ribitol_allNH_Lig_Resdict_distance['%s'%id]=Ribitol_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    if atmNH in NONHcommon_intersectionfinal:
+                        Ribitol_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
+                        Ribitol_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
+                        Ribitol_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_NH.items()}
+                        Ribitol_CommonNH_Lig_Resdict['%s'%id]=Ribitol_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Ribitol_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
+                        Ribitol_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_NH_distance.items()}
+                        Ribitol_CommonNH_Lig_Resdict_distance['%s'%id]=Ribitol_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                if atmNH in phosphate:
+                    phosphate_lresidueNH.append(resnumNH)
+                    phosphate_latomNH.append(atmNH)
+                    phosphate_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
+                    phosphate_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
+                    phosphate_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_NH.items()}
+                    phosphate_allNH_Lig_Resdict['%s'%id]=phosphate_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    phosphate_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
+                    phosphate_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_NH_distance.items()}
+                    phosphate_allNH_Lig_Resdict_distance['%s'%id]=phosphate_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group                                
+                    if atmNH in NONHcommon_intersectionfinal:
+                        phosphate_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
+                        phosphate_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
+                        phosphate_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_NH.items()}
+                        phosphate_CommonNH_Lig_Resdict['%s'%id]=phosphate_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        phosphate_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
+                        phosphate_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_NH_distance.items()}
+                        phosphate_CommonNH_Lig_Resdict_distance['%s'%id]=phosphate_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                if atmNH in Ribose:
+                    Ribose_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
+                    Ribose_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
+                    Ribose_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_NH.items()}
+                    Ribose_allNH_Lig_Resdict['%s'%id]=Ribose_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Ribose_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
+                    Ribose_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_NH_distance.items()}
+                    Ribose_allNH_Lig_Resdict_distance['%s'%id]=Ribose_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    if atmNH in NONHcommon_intersectionfinal:
+                        Ribose_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
+                        Ribose_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
+                        Ribose_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_NH.items()}
+                        Ribose_CommonNH_Lig_Resdict['%s'%id]=Ribose_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Ribose_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
+                        Ribose_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_NH_distance.items()}
+                        Ribose_CommonNH_Lig_Resdict_distance['%s'%id]=Ribose_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
 
-                                    Nicot_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                    Nicot_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_H_distance.items()}
-                                    Nicot_CommonH_Lig_Resdict_distance['%s'%id]=Nicot_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
- 
-                            if atmH in Ribitol:
-                                Ribitol_lresidueH.append(resnumH)
-                                Ribitol_latomH.append(atmH)
-                                Ribitol_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for physio and weblogo
-                                Ribitol_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
-                                Ribitol_All_combine_Lig_Res_H_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_H.items()}
-                                Ribitol_allH_Lig_Resdict['%s'%id]=Ribitol_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                Ribitol_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                Ribitol_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_H_distance.items()}
-                                Ribitol_allH_Lig_Resdict_distance['%s'%id]=Ribitol_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-
-                                
-                                if atmH in H_common_intersectionfinal:
-                                    Ribitol_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
-                                    Ribitol_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
-                                    Ribitol_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_H.items()}
-                                    Ribitol_CommonH_Lig_Resdict['%s'%id]=Ribitol_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    Ribitol_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                    Ribitol_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_H_distance.items()}
-                                    Ribitol_CommonH_Lig_Resdict_distance['%s'%id]=Ribitol_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-
-                            if atmH in phosphate:
-                                phosphate_lresidueH.append(resnumH)
-                                phosphate_latomH.append(atmH)
-                                phosphate_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for physio and weblogo
-                                phosphate_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
-                                phosphate_All_combine_Lig_Res_H_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_H.items()}
-                                phosphate_allH_Lig_Resdict['%s'%id]=phosphate_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                phosphate_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                phosphate_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_H_distance.items()}
-                                phosphate_allH_Lig_Resdict_distance['%s'%id]=phosphate_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-
-                                
-                                if atmH in H_common_intersectionfinal:
-                                    phosphate_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
-                                    phosphate_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
-                                    phosphate_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_H.items()}
-                                    phosphate_CommonH_Lig_Resdict['%s'%id]=phosphate_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    phosphate_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                    phosphate_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_H_distance.items()}
-                                    phosphate_CommonH_Lig_Resdict_distance['%s'%id]=phosphate_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-
-                            if atmH in Ribose:
-
-                                Ribose_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
-                                Ribose_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
-                                Ribose_All_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_H.items()}
-                                Ribose_allH_Lig_Resdict['%s'%id]=Ribose_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                Ribose_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                Ribose_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_H_distance.items()}
-                                Ribose_allH_Lig_Resdict_distance['%s'%id]=Ribose_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-                                
-
-                                if atmH in H_common_intersectionfinal:
-                                    Ribose_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)                                    
-                                    Ribose_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
-                                    Ribose_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_H.items()}
-                                    Ribose_CommonH_Lig_Resdict['%s'%id]=Ribose_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    Ribose_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                    Ribose_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_H_distance.items()}
-                                    Ribose_CommonH_Lig_Resdict_distance['%s'%id]=Ribose_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-                                
-
- 
-                            if atmH in Adenin:
-                                Adenin_lresidueH.append(resnumH)
-                                Adenin_latomH.append(atmH)                                
-                                Adenin_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)
-                                Adenin_All_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with all lig atom and residues for table
-                                Adenin_All_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_H.items()}
-                                Adenin_allH_Lig_Resdict['%s'%id]=Adenin_All_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                Adenin_All_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                Adenin_All_combine_Lig_Res_H_distance_uniquify= {k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_H_distance.items()}
-                                Adenin_allH_Lig_Resdict_distance['%s'%id]=Adenin_All_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-
-                                if atmH in H_common_intersectionfinal:
-                                    Adenin_common_graphdicH.setdefault('%s'%atmH,[]).append(resnumH)                                    
-                                    Adenin_Common_combine_Lig_Res_H.setdefault('%s'%atmH,[]).append(resnumH)#creating dictionary with common lig atom and residues for table
-                                    Adenin_Common_combine_Lig_Res_H_uniquify={k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_H.items()}
-                                    Adenin_CommonH_Lig_Resdict['%s'%id]=Adenin_Common_combine_Lig_Res_H_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    Adenin_Common_combine_Lig_Res_H_distance.setdefault('%s'%atmH,[]).append(distanceH)#creating dictionary with all lig atom and distance for table
-                                    Adenin_Common_combine_Lig_Res_H_distance_uniquify={k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_H_distance.items()}
-                                    Adenin_CommonH_Lig_Resdict_distance['%s'%id]=Adenin_Common_combine_Lig_Res_H_distance_uniquify#final dic for table with pdb id , lig atom and distance for all group
-                        
-                    else:
-                        if line.startswith(('0', '1', '2', '3', '4', '5', '6', '7', '8', '9')):
-                            #print "NHB", line
-                            lineNH=line.split()
-                            lignameNH=lineNH[9]
-                            atmNH=lineNH[8]
-                            resNH=lineNH[3]
-                            residuenumNH=lineNH[4]
-                            distanceNH=lineNH[12]
-                            resnumNH=resNH+residuenumNH
-#                               #appending each residue and its position to list called lresidue
-                            lresidueNH.append(resnumNH)
-                            #appending each ligand atom to list called latom
-                            latomNH.append(atmNH)
-                            #appending distance of each interaction to ldistance
-                            ldistanceNH.append(distanceNH)
-                            #creating a set for residue with position
-                            residue_seenNH.add(resnumNH)
-                            #creating a set for each ligand atom
-                            atom_seenNH.add(atmNH)
-                            #making a dictionary with list comtaining residue name and position
-                            residueNH.setdefault('%s'%id,[]).append(resnumNH)
-                            #making a dictionary with list comataing ligand atoms
-                            atmnameNH.setdefault('%s'%id,[]).append(atmNH)
-                            if atmNH in Nicot:
-                                Nicot_lresidueNH.append(resnumNH)
-                                Nicot_latomNH.append(atmNH)
-                                Nicot_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
-                                Nicot_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
-                                Nicot_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_NH.items()}
-                                Nicot_allNH_Lig_Resdict['%s'%id]=Nicot_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                Nicot_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
-                                Nicot_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Nicot_All_combine_Lig_Res_NH_distance.items()}
-                                Nicot_allNH_Lig_Resdict_distance['%s'%id]=Nicot_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                if atmNH in NONHcommon_intersectionfinal:
-                                    Nicot_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
-                                    Nicot_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
-                                    Nicot_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_NH.items()}
-                                    Nicot_CommonNH_Lig_Resdict['%s'%id]=Nicot_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    Nicot_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
-                                    Nicot_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Nicot_Common_combine_Lig_Res_NH_distance.items()}
-                                    Nicot_CommonNH_Lig_Resdict_distance['%s'%id]=Nicot_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                            if atmNH in Ribitol:
-                                Ribitol_lresidueNH.append(resnumNH)
-                                Ribitol_latomNH.append(atmNH)
-                                Ribitol_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
-                                Ribitol_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
-                                Ribitol_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_NH.items()}
-                                Ribitol_allNH_Lig_Resdict['%s'%id]=Ribitol_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                Ribitol_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
-                                Ribitol_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribitol_All_combine_Lig_Res_NH_distance.items()}
-                                Ribitol_allNH_Lig_Resdict_distance['%s'%id]=Ribitol_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
-                                
-
-                                if atmNH in NONHcommon_intersectionfinal:
-                                    Ribitol_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
-                                    Ribitol_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
-                                    Ribitol_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_NH.items()}
-                                    Ribitol_CommonNH_Lig_Resdict['%s'%id]=Ribitol_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    Ribitol_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
-                                    Ribitol_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribitol_Common_combine_Lig_Res_NH_distance.items()}
-                                    Ribitol_CommonNH_Lig_Resdict_distance['%s'%id]=Ribitol_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                            if atmNH in phosphate:
-                                phosphate_lresidueNH.append(resnumNH)
-                                phosphate_latomNH.append(atmNH)
-                                phosphate_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
-                                phosphate_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
-                                phosphate_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_NH.items()}
-                                phosphate_allNH_Lig_Resdict['%s'%id]=phosphate_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                phosphate_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
-                                phosphate_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in phosphate_All_combine_Lig_Res_NH_distance.items()}
-                                phosphate_allNH_Lig_Resdict_distance['%s'%id]=phosphate_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group                                
-
-                                if atmNH in NONHcommon_intersectionfinal:
-                                    phosphate_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
-                                    phosphate_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
-                                    phosphate_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_NH.items()}
-                                    phosphate_CommonNH_Lig_Resdict['%s'%id]=phosphate_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    phosphate_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
-                                    phosphate_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in phosphate_Common_combine_Lig_Res_NH_distance.items()}
-                                    phosphate_CommonNH_Lig_Resdict_distance['%s'%id]=phosphate_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                            if atmNH in Ribose:
-                                Ribose_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
-                                Ribose_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
-                                Ribose_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_NH.items()}
-                                Ribose_allNH_Lig_Resdict['%s'%id]=Ribose_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                Ribose_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
-                                Ribose_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribose_All_combine_Lig_Res_NH_distance.items()}
-                                Ribose_allNH_Lig_Resdict_distance['%s'%id]=Ribose_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
-
-                                if atmNH in NONHcommon_intersectionfinal:
-                                    Ribose_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
-                                    Ribose_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
-                                    Ribose_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_NH.items()}
-                                    Ribose_CommonNH_Lig_Resdict['%s'%id]=Ribose_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                                    Ribose_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
-                                    Ribose_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Ribose_Common_combine_Lig_Res_NH_distance.items()}
-                                    Ribose_CommonNH_Lig_Resdict_distance['%s'%id]=Ribose_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-                            if atmNH in Adenin:
-                                Adenin_lresidueNH.append(resnumNH)
-                                Adenin_latomNH.append(atmNH)
-                                Adenin_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
-                                Adenin_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
-                                Adenin_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_NH.items()}
-                                Adenin_allNH_Lig_Resdict['%s'%id]=Adenin_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
-                                
-                                
-
-
-                                Adenin_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
-                                Adenin_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_NH_distance.items()}
-                                Adenin_allNH_Lig_Resdict_distance['%s'%id]=Adenin_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
-                                
-
-
-                                if atmNH in NONHcommon_intersectionfinal:
-                                    Adenin_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
-                                    Adenin_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
-                                    Adenin_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_NH.items()}
-                                    Adenin_CommonNH_Lig_Resdict['%s'%id]=Adenin_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
-
-
-                                    Adenin_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
-                                    Adenin_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_NH_distance.items()}
-                                    Adenin_CommonNH_Lig_Resdict_distance['%s'%id]=Adenin_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
-   Nicot_listdata_H=[]
-   Nicot_listdata_NH=[]
-   Nicot_lresidueH=[]
-   Nicot_latomH=[]
-   Nicot_lresidueNH=[]
-   Nicot_latomNH=[]
-   Nicot_All_combine_Lig_Res_H={}
-   Nicot_Common_combine_Lig_Res_H={}
+                if atmNH in Adenin:
+                    Adenin_lresidueNH.append(resnumNH)
+                    Adenin_latomNH.append(atmNH)
+                    Adenin_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)
+                    Adenin_All_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with all lig atom and residues for table
+                    Adenin_All_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_NH.items()}
+                    Adenin_allNH_Lig_Resdict['%s'%id]=Adenin_All_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    Adenin_All_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with all lig atom and residues for table
+                    Adenin_All_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Adenin_All_combine_Lig_Res_NH_distance.items()}
+                    Adenin_allNH_Lig_Resdict_distance['%s'%id]=Adenin_All_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for all group
+                    if atmNH in NONHcommon_intersectionfinal:
+                        Adenin_common_graphdicNH.setdefault('%s'%atmNH,[]).append(resnumNH)                                   
+                        Adenin_Common_combine_Lig_Res_NH.setdefault('%s'%atmNH,[]).append(resnumNH)#creating dictionary with common lig atom and residues for table
+                        Adenin_Common_combine_Lig_Res_NH_uniquify= {k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_NH.items()}
+                        Adenin_CommonNH_Lig_Resdict['%s'%id]=Adenin_Common_combine_Lig_Res_NH_uniquify#final dic for table with pdb id , lig atom and residues for common group
+                        Adenin_Common_combine_Lig_Res_NH_distance.setdefault('%s'%atmNH,[]).append(distanceNH)#creating dictionary with common lig atom and residues for table
+                        Adenin_Common_combine_Lig_Res_NH_distance_uniquify= {k:list(set(j)) for k,j in Adenin_Common_combine_Lig_Res_NH_distance.items()}
+                        Adenin_CommonNH_Lig_Resdict_distance['%s'%id]=Adenin_Common_combine_Lig_Res_NH_distance_uniquify#final dic for table with pdb id , lig atom and residues for common group
+    Nicot_listdata_H=[]
+    Nicot_listdata_NH=[]
+    Nicot_lresidueH=[]
+    Nicot_latomH=[]
+    Nicot_lresidueNH=[]
+    Nicot_latomNH=[]
+    Nicot_All_combine_Lig_Res_H={}
+    Nicot_Common_combine_Lig_Res_H={}
    
-   Nicot_All_combine_Lig_Res_H_distance={}
-   Nicot_Common_combine_Lig_Res_H_distance={}
-   Nicot_All_combine_Lig_Res_NH_distance={}
-   Nicot_Common_combine_Lig_Res_NH_distance={}
+    Nicot_All_combine_Lig_Res_H_distance={}
+    Nicot_Common_combine_Lig_Res_H_distance={}
+    Nicot_All_combine_Lig_Res_NH_distance={}
+    Nicot_Common_combine_Lig_Res_NH_distance={}
 
-   Nicot_All_combine_Lig_Res_NH={}
-   Nicot_Common_combine_Lig_Res_NH={}
-   Nicot_common_listdata_H=[]
-   Nicot_common_listdata_NH=[]
-   Nicot_finalsetH.clear()
-   Nicot_finalsetNH.clear()
+    Nicot_All_combine_Lig_Res_NH={}
+    Nicot_Common_combine_Lig_Res_NH={}
+    Nicot_common_listdata_H=[]
+    Nicot_common_listdata_NH=[]
+    Nicot_finalsetH.clear()
+    Nicot_finalsetNH.clear()
 
-   Ribitol_listdata_H=[]
-   Ribitol_listdata_NH=[]
-   Ribitol_lresidueH=[]
-   Ribitol_latomH=[]
-   Ribitol_lresidueNH=[]
-   Ribitol_latomNH=[]
-   Ribitol_All_combine_Lig_Res_H={}
-   Ribitol_Common_combine_Lig_Res_H={}
-   Ribitol_All_combine_Lig_Res_NH={}
-   Ribitol_Common_combine_Lig_Res_NH={}
+    Ribitol_listdata_H=[]
+    Ribitol_listdata_NH=[]
+    Ribitol_lresidueH=[]
+    Ribitol_latomH=[]
+    Ribitol_lresidueNH=[]
+    Ribitol_latomNH=[]
+    Ribitol_All_combine_Lig_Res_H={}
+    Ribitol_Common_combine_Lig_Res_H={}
+    Ribitol_All_combine_Lig_Res_NH={}
+    Ribitol_Common_combine_Lig_Res_NH={}
    
-   Ribitol_All_combine_Lig_Res_H_distance={}
-   Ribitol_Common_combine_Lig_Res_H_distance={}
-   Ribitol_All_combine_Lig_Res_NH_distance={}
-   Ribitol_Common_combine_Lig_Res_NH_distance={}
+    Ribitol_All_combine_Lig_Res_H_distance={}
+    Ribitol_Common_combine_Lig_Res_H_distance={}
+    Ribitol_All_combine_Lig_Res_NH_distance={}
+    Ribitol_Common_combine_Lig_Res_NH_distance={}
    
 
 
-   phosphate_listdata_H=[]
-   phosphate_listdata_NH=[]
-   phosphate_lresidueH=[]
-   phosphate_latomH=[]
-   phosphate_lresidueNH=[]
-   phosphate_latomNH=[]
-   phosphate_All_combine_Lig_Res_H={}
-   phosphate_Common_combine_Lig_Res_H={}
-   phosphate_All_combine_Lig_Res_NH={}
-   phosphate_Common_combine_Lig_Res_NH={}
+    phosphate_listdata_H=[]
+    phosphate_listdata_NH=[]
+    phosphate_lresidueH=[]
+    phosphate_latomH=[]
+    phosphate_lresidueNH=[]
+    phosphate_latomNH=[]
+    phosphate_All_combine_Lig_Res_H={}
+    phosphate_Common_combine_Lig_Res_H={}
+    phosphate_All_combine_Lig_Res_NH={}
+    phosphate_Common_combine_Lig_Res_NH={}
 
-   phosphate_All_combine_Lig_Res_H_distance={}
-   phosphate_Common_combine_Lig_Res_H_distance={}
-   phosphate_All_combine_Lig_Res_NH_distance={}
-   phosphate_Common_combine_Lig_Res_NH_distance={}
+    phosphate_All_combine_Lig_Res_H_distance={}
+    phosphate_Common_combine_Lig_Res_H_distance={}
+    phosphate_All_combine_Lig_Res_NH_distance={}
+    phosphate_Common_combine_Lig_Res_NH_distance={}
    
-   phosphate_common_listdata_H=[]
-   phosphate_common_listdata_NH=[]
-   phosphate_finalsetH.clear()
-   phosphate_finalsetNH.clear()
+    phosphate_common_listdata_H=[]
+    phosphate_common_listdata_NH=[]
+    phosphate_finalsetH.clear()
+    phosphate_finalsetNH.clear()
 
-
-   
-   Ribose_listdata_H=[]
-   Ribose_listdata_NH=[]
-   Ribose_All_combine_Lig_Res_H={}
-   Ribose_Common_combine_Lig_Res_H={}   
-   Ribose_All_combine_Lig_Res_NH={}
-   Ribose_Common_combine_Lig_Res_NH={}   
-
-   Ribose_All_combine_Lig_Res_H_distance={}
-   Ribose_Common_combine_Lig_Res_H_distance={}
-   Ribose_All_combine_Lig_Res_NH_distance={}
-   Ribose_Common_combine_Lig_Res_NH_distance={}
-   
-   Adenin_lresidueH=[]
-   Adenin_latomH=[]
-   Adenin_lresidueNH=[]
-   Adenin_latomNH=[]
-   Adenin_listdata_H=[]
-   Adenin_listdata_NH=[]
-   Adenin_All_combine_Lig_Res_H={}
-   Adenin_Common_combine_Lig_Res_H={}   
-   Adenin_All_combine_Lig_Res_NH={}
-   Adenin_Common_combine_Lig_Res_NH={}   
-
-   Adenin_All_combine_Lig_Res_H_distance={}  
-   Adenin_Common_combine_Lig_Res_H_distance={}
-   Adenin_All_combine_Lig_Res_NH_distance={}
-   Adenin_Common_combine_Lig_Res_NH_distance={}
 
    
-   Ribitol_common_listdata_H=[]
-   Ribitol_common_listdata_NH=[]
-   Ribose_common_listdata_H=[]
-   Ribose_common_listdata_NH=[]
-   Adenin_common_listdata_H=[]
-   Adenin_common_listdata_NH=[]
+    Ribose_listdata_H=[]
+    Ribose_listdata_NH=[]
+    Ribose_All_combine_Lig_Res_H={}
+    Ribose_Common_combine_Lig_Res_H={}   
+    Ribose_All_combine_Lig_Res_NH={}
+    Ribose_Common_combine_Lig_Res_NH={}   
+
+    Ribose_All_combine_Lig_Res_H_distance={}
+    Ribose_Common_combine_Lig_Res_H_distance={}
+    Ribose_All_combine_Lig_Res_NH_distance={}
+    Ribose_Common_combine_Lig_Res_NH_distance={}
+   
+    Adenin_lresidueH=[]
+    Adenin_latomH=[]
+    Adenin_lresidueNH=[]
+    Adenin_latomNH=[]
+    Adenin_listdata_H=[]
+    Adenin_listdata_NH=[]
+    Adenin_All_combine_Lig_Res_H={}
+    Adenin_Common_combine_Lig_Res_H={}   
+    Adenin_All_combine_Lig_Res_NH={}
+    Adenin_Common_combine_Lig_Res_NH={}   
+
+    Adenin_All_combine_Lig_Res_H_distance={}  
+    Adenin_Common_combine_Lig_Res_H_distance={}
+    Adenin_All_combine_Lig_Res_NH_distance={}
+    Adenin_Common_combine_Lig_Res_NH_distance={}
 
    
-   lresidueH=[]
-   latomH=[]
-   ldistanceH=[]
-   
-   lresidueNH=[]
-   latomNH=[]
-   ldistanceNH=[]
-   
-   combines_listdata=[]
-   residue_seenH.clear()
-   Ribitol_finalsetH.clear()
-   Ribitol_finalsetNH.clear()
-   Adenin_finalsetH.clear()
-   Adenin_finalsetNH.clear()
+    Ribitol_common_listdata_H=[]
+    Ribitol_common_listdata_NH=[]
+    Ribose_common_listdata_H=[]
+    Ribose_common_listdata_NH=[]
+    Adenin_common_listdata_H=[]
+    Adenin_common_listdata_NH=[]
 
-   finalsetH.clear()
-   finalsetNH.clear()
+   
+    lresidueH=[]
+    latomH=[]
+    ldistanceH=[]
+   
+    lresidueNH=[]
+    latomNH=[]
+    ldistanceNH=[]
+   
+    combines_listdata=[]
+    residue_seenH.clear()
+    Ribitol_finalsetH.clear()
+    Ribitol_finalsetNH.clear()
+    Adenin_finalsetH.clear()
+    Adenin_finalsetNH.clear()
+
+    finalsetH.clear()
+    finalsetNH.clear()
 
 
 ####################Define function for Statistics ################################
@@ -1128,10 +1017,10 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Nicot Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Nicot sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>I. Compiled Bonded Interactions - Click here for Basic Statistics Information </button>"#Start of click drop down
+print "<button class='collapsible'>I. All bonded interactions- click here for basic statistical information </button>"#Start of click drop down
 print "<div class='contentsection'>"
 
 
@@ -1178,10 +1067,10 @@ print """
 """
 
 if bool(Nicot_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for Nicot: H bonded################################
 
@@ -1209,11 +1098,11 @@ if bool(Nicot_graphdicH):
     
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(H_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1248,13 +1137,13 @@ if bool(Nicot_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 if bool(Nicot_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for Nicot: NON bonded################################
 NH_templist4graph=[]
@@ -1283,11 +1172,11 @@ if bool(Nicot_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(NH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1322,7 +1211,7 @@ if bool(Nicot_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -1340,10 +1229,10 @@ print """
    
 """# initializing the middle column
 if bool(Nicot_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Nicot : H bonded################################
 CommH_templist4graph=[]
@@ -1366,11 +1255,11 @@ if bool(Nicot_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1405,15 +1294,15 @@ if bool(Nicot_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
     
 if bool(Nicot_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Nicot: NON bonded################################
 CommNH_templist4graph=[]
@@ -1436,11 +1325,11 @@ if bool(Nicot_common_graphdicNH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommNH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1475,7 +1364,7 @@ if bool(Nicot_common_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 print """
         </div>
@@ -1552,7 +1441,7 @@ if bool (CommH_graphdic1):
 
 
     
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>"
     
@@ -1628,7 +1517,7 @@ if bool(CommNH_graphdic1):
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
     weblogo_images=' '.join(str(x) for x in Nicot_weblogo_collection)
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>" #initiation of weblog_row
     
@@ -1665,10 +1554,10 @@ print """
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Ribose-Nicot Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Ribose-Nicot sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>I. Compiled Bonded Interactions - Click here for Basic Statistics Information </button>"#Start of click drop down
+print "<button class='collapsible'>I. All bonded interactions- click here for basic statistical information </button>"#Start of click drop down
 print "<div class='contentsection'>"
 
 
@@ -1712,10 +1601,10 @@ print """
 """
 
 if bool(Ribitol_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for Ribitol: H bonded################################
 
@@ -1743,11 +1632,11 @@ if bool(Ribitol_graphdicH):
     
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(H_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1782,13 +1671,13 @@ if bool(Ribitol_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 if bool(Ribitol_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for Ribitol: NON bonded################################
 NH_templist4graph=[]
@@ -1817,11 +1706,11 @@ if bool(Ribitol_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(NH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1856,7 +1745,7 @@ if bool(Ribitol_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -1874,10 +1763,10 @@ print """
    
 """# initializing the middle column
 if bool(Ribitol_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribitol : H bonded################################
 CommH_templist4graph=[]
@@ -1900,11 +1789,11 @@ if bool(Ribitol_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -1939,15 +1828,15 @@ if bool(Ribitol_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
     
 if bool(Ribitol_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribitol: NON bonded################################
 CommNH_templist4graph=[]
@@ -1970,11 +1859,11 @@ if bool(Ribitol_common_graphdicNH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommNH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2009,7 +1898,7 @@ if bool(Ribitol_common_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 print """
         </div>
@@ -2086,7 +1975,7 @@ if bool (CommH_graphdic1):
 
 
     
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>"
     
@@ -2162,7 +2051,7 @@ if bool(CommNH_graphdic1):
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
     weblogo_images=' '.join(str(x) for x in Ribitol_weblogo_collection)
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>" #initiation of weblog_row
     
@@ -2198,10 +2087,10 @@ print """
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Phosphate Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Phosphate sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>I. Compiled Bonded Interactions - Click here for Basic Statistics Information </button>"#Start of click drop down
+print "<button class='collapsible'>I. All bonded interactions- click here for basic statistical information </button>"#Start of click drop down
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
@@ -2244,10 +2133,10 @@ print """
 """
 
 if bool(phosphate_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for phosphate: H bonded################################
 
@@ -2275,11 +2164,11 @@ if bool(phosphate_graphdicH):
     
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(H_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2314,13 +2203,13 @@ if bool(phosphate_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 if bool(phosphate_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for phosphate: NON bonded################################
 NH_templist4graph=[]
@@ -2349,11 +2238,11 @@ if bool(phosphate_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(NH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2388,7 +2277,7 @@ if bool(phosphate_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -2406,10 +2295,10 @@ print """
    
 """# initializing the middle column
 if bool(phosphate_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for phosphate : H bonded################################
 CommH_templist4graph=[]
@@ -2432,11 +2321,11 @@ if bool(phosphate_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2471,15 +2360,15 @@ if bool(phosphate_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
     
 if bool(phosphate_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for phosphate: NON bonded################################
 CommNH_templist4graph=[]
@@ -2502,11 +2391,11 @@ if bool(phosphate_common_graphdicNH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommNH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2541,7 +2430,7 @@ if bool(phosphate_common_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 print """
         </div>
@@ -2618,7 +2507,7 @@ if bool (CommH_graphdic1):
 
 
     
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>"
     
@@ -2694,7 +2583,7 @@ if bool(CommNH_graphdic1):
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
     weblogo_images=' '.join(str(x) for x in phosphate_weblogo_collection)
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>" #initiation of weblog_row
     
@@ -2735,10 +2624,10 @@ print """
 #####################################################
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Ribose-Adeno Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Ribose-Adeno sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>I. Compiled Bonded Interactions - Click here for Basic Statistics Information </button>"#Start of click drop down
+print "<button class='collapsible'>I. All bonded interactions- click here for basic statistical information </button>"#Start of click drop down
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
@@ -2781,10 +2670,10 @@ print """
 """#start of    Ribose grid section
 
 if bool(Ribose_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     print "No Interactions"
 ####################All Residues Colored Table for Ribose: H bonded################################
 H_templist4graph=[]
@@ -2808,11 +2697,11 @@ if bool(Ribose_graphdicH):
             
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(H_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2847,15 +2736,15 @@ if bool(Ribose_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 
 
 if bool(Ribose_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "NO Interactions"
 ####################All Residues Colored Table for NON bonded################################
 NH_templist4graph=[]
@@ -2882,11 +2771,11 @@ if bool(Ribose_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(NH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -2921,7 +2810,7 @@ if bool(Ribose_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -2941,10 +2830,10 @@ print """
 
 
 if bool(Ribose_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribose : H bonded################################
 
@@ -2968,11 +2857,11 @@ if bool(Ribose_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -3007,15 +2896,15 @@ if bool(Ribose_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 
 
 if bool(Ribose_CommonNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribose: NON bonded################################
 
@@ -3040,11 +2929,11 @@ if bool(Ribose_common_graphdicNH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommNH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -3079,7 +2968,7 @@ if bool(Ribose_common_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "No Interactions"
     
 print """
@@ -3155,7 +3044,7 @@ if bool (CommH_graphdic1):
 
 
     
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>"
     
@@ -3231,7 +3120,7 @@ if bool(CommNH_graphdic1):
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
     weblogo_images=' '.join(str(x) for x in Ribose_weblogo_collection)
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:"
     
     print "<div class='weblogo_row'>" #initiation of weblog_row
     
@@ -3268,10 +3157,10 @@ print """
 ##############################
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Adenin Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Adenin sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
-print "<button class='collapsible'>I. Compiled Bonded Interactions - Click here for Basic Statistics Information </button>"#Start of click drop down
+print "<button class='collapsible'>I. All bonded interactions- click here for basic statistical information </button>"#Start of click drop down
 print "<div class='contentsection'>"
 
 print "<p style='font-size:20px; color:black' align='center'>"
@@ -3317,10 +3206,10 @@ print """
 
 
 if bool(Adenin_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for Adenin: H bonded################################
 
@@ -3346,11 +3235,11 @@ if bool(Adenin_graphdicH):
             
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(H_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -3385,15 +3274,15 @@ if bool(Adenin_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 
 
 if bool(Adenin_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for NON bonded################################
 NH_templist4graph=[]
@@ -3420,11 +3309,11 @@ if bool(Adenin_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(NH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -3459,7 +3348,7 @@ if bool(Adenin_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physiochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -3479,10 +3368,10 @@ print """
 
 
 if bool(Adenin_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "<p> No Common Interactions</p>"     
 ####################Common Residues Colored Table for Adenin : H bonded################################
 CommH_templist4graph=[]
@@ -3506,11 +3395,11 @@ if bool(Adenin_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -3547,15 +3436,15 @@ if bool(Adenin_common_graphdicH):
 
 
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemicalproperty based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<p> No Common Atoms Identified</p>" 
 
 
 if bool(Adenin_CommonNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Adenin: NON bonded################################
 
@@ -3580,11 +3469,11 @@ if bool(Adenin_common_graphdicNH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
-    print "<th  colspan='%d'>Compiled List of Common Residues From Analysed Protein Structures</th>"% length_ofcell
+    print "<th  colspan='%d'>List of common residues from analysed protein structures</th>"% length_ofcell
     print "</tr>"
     for key in sorted(CommNH_graphdic1.iterkeys()):
         print "<td align='center'>%s</td>" %key
@@ -3619,7 +3508,7 @@ if bool(Adenin_common_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -3698,7 +3587,7 @@ if bool(CommH_graphdic1):
 
 
     
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:</p>"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:</p>"
     
     print "<div class='weblogo_row'>"
     
@@ -3774,7 +3663,7 @@ if bool(CommNH_graphdic1):
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
     weblogo_images=' '.join(str(x) for x in Adenin_weblogo_collection)
-    print "<p style='font-size:20px; color:brown'> Weblogo showing the frequency of Residues binding to Ligand atoms for the selected structures:</p>"
+    print "<p style='font-size:20px; color:brown'> WebLogo showing the frequency of residues binding to ligand atoms for the selected structures:</p>"
     
     print "<div class='weblogo_row'>" #initiation of weblog_row
     

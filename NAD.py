@@ -45,8 +45,8 @@ print "<li><a href='HomePage.py'>Home</a></li>"
 print "<li><a href=''>Contact</a></li>"
 print "</ul>"
 print "<div align='center'>"
-print "<h2> Below are the Bound Ligand Information for the Entered PDB id's: %s</h2>" % text_content
-print "<p> Select Ligand of interest for listed PDB ids for comparing the binding site</p>"
+print "<h2> Below is shown Bound Ligand information for the PDB IDs entered: %s</h2>" % text_content
+print "<p> Select ligand of interest for the PDB IDs listed to compare the binding sites</p>"
 
 #Capturing URL address to get the ligand name for further processing
 url1 = os.environ['HTTP_HOST']

@@ -46,7 +46,7 @@ print "<li><a href=''>Contact</a></li>"
 print "</ul>"
 print "<div align='center'>"
 print "<h2> The Selected Cofactor for comparison is : %s</h2>" % text_content
-#print "<p> Select Ligand of interest for listed PDB ids for comparing the binding site</p>"
+#print "<p> Select ligand of interest for the PDB IDs listed to compare the binding sites</p>"
 
 #capturing the entered pdb ids into list
 #print text_content

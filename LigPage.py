@@ -52,9 +52,9 @@ print "<li><a href='HomePage.py'>Home</a></li>"
 print "<li><a href=''>Contact</a></li>"
 print "</ul>"
 print "<div align='center'>"
-print "<h2> Below are the Bound Ligand Information for the Entered PDB id's: %s, </h2>" % text_content
-print "<p> Select Ligand of interest for listed PDB ids for comparing the binding site</p>"
-print lig_content
+print "<h2> Below is shown Bound Ligand information for the PDB IDs entered: %s </h2>" % text_content
+print "<p> Select ligand of interest for the PDB IDs listed to compare the binding sites</p>"
+#print lig_content
 #capturing the entered pdb ids into list
 for i in text_content:
         text_content1=text_content.strip()
@@ -125,9 +125,9 @@ for k,dk in mydict.iteritems():
 #        print "<br/>"
 print "</table>"
 print "<br/>"
-print "List of Ligand atom names to be compared:"
-print "<input name='ligatom'  value='%s'>" %(lig_content)
-print "<br/>","<br/>"
+#print "List of Ligand atom names to be compared:"
+#print "<input name='ligatom'  value='%s'>" %(lig_content)
+#print "<br/>","<br/>"
 print "<input type = 'submit'  value = 'Submit'  />"
 print "<input type = 'reset'  value = 'Clear'  />"
 print "</form>"

@@ -173,7 +173,7 @@ for key in form.keys():
 #        print "is", value
         value_dict.setdefault('%s'%variable,[]).append(value)
         r += "<p>"+ variable +", "+ value +"</p>\n"
-print "<p style='font-size:20px; color:blue'>  The Results are for the following selected PDBID's and Ligands: ",'\n'.join("{}:{}".format(k,v) for k,v in value_dict.items()),"</p>","<br/>"
+print "<p style='font-size:20px; color:blue'>  Results for the following selected PDBID's and Ligands: ",'\n'.join("{}:{}".format(k,v) for k,v in value_dict.items()),"</p>","<br/>"
 
 
 pdbsum_URL="http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="
@@ -1133,7 +1133,7 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Nicot Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Nicot sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -1180,10 +1180,10 @@ print """
 """
 
 if bool(Nicot_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for Nicot: H bonded################################
 
@@ -1211,7 +1211,7 @@ if bool(Nicot_graphdicH):
     
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -1250,13 +1250,13 @@ if bool(Nicot_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 if bool(Nicot_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for Nicot: NON bonded################################
 NH_templist4graph=[]
@@ -1285,7 +1285,7 @@ if bool(Nicot_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -1324,7 +1324,7 @@ if bool(Nicot_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -1342,10 +1342,10 @@ print """
    
 """# initializing the middle column
 if bool(Nicot_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Nicot : H bonded################################
 CommH_templist4graph=[]
@@ -1368,7 +1368,7 @@ if bool(Nicot_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -1407,15 +1407,15 @@ if bool(Nicot_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
     
 if bool(Nicot_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Nicot: NON bonded################################
 CommNH_templist4graph=[]
@@ -1667,7 +1667,7 @@ print """
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Ribitol Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Ribitol sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -1715,10 +1715,10 @@ print """
 """
 
 if bool(Ribitol_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for Ribitol: H bonded################################
 
@@ -1746,7 +1746,7 @@ if bool(Ribitol_graphdicH):
     
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -1785,13 +1785,13 @@ if bool(Ribitol_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 if bool(Ribitol_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for Ribitol: NON bonded################################
 NH_templist4graph=[]
@@ -1820,7 +1820,7 @@ if bool(Ribitol_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -1859,7 +1859,7 @@ if bool(Ribitol_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -1877,10 +1877,10 @@ print """
    
 """# initializing the middle column
 if bool(Ribitol_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribitol : H bonded################################
 CommH_templist4graph=[]
@@ -1903,7 +1903,7 @@ if bool(Ribitol_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -1942,15 +1942,15 @@ if bool(Ribitol_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
     
 if bool(Ribitol_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribitol: NON bonded################################
 CommNH_templist4graph=[]
@@ -2201,7 +2201,7 @@ print """
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>phosphate Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>phosphate sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -2248,10 +2248,10 @@ print """
 """
 
 if bool(phosphate_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for phosphate: H bonded################################
 
@@ -2279,7 +2279,7 @@ if bool(phosphate_graphdicH):
     
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -2318,13 +2318,13 @@ if bool(phosphate_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 if bool(phosphate_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for phosphate: NON bonded################################
 NH_templist4graph=[]
@@ -2353,7 +2353,7 @@ if bool(phosphate_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -2392,7 +2392,7 @@ if bool(phosphate_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -2410,10 +2410,10 @@ print """
    
 """# initializing the middle column
 if bool(phosphate_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for phosphate : H bonded################################
 CommH_templist4graph=[]
@@ -2436,7 +2436,7 @@ if bool(phosphate_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -2475,15 +2475,15 @@ if bool(phosphate_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
     
 if bool(phosphate_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for phosphate: NON bonded################################
 CommNH_templist4graph=[]
@@ -2739,7 +2739,7 @@ print """
 #####################################################
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Ribose Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Ribose sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -2787,10 +2787,10 @@ print """
 
 print Ribose_allH_Lig_Resdict
 if bool(Ribose_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     print "No Interactions"
 ####################All Residues Colored Table for Ribose: H bonded################################
 H_templist4graph=[]
@@ -2814,7 +2814,7 @@ if bool(Ribose_graphdicH):
             
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -2853,15 +2853,15 @@ if bool(Ribose_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 
 
 if bool(Ribose_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "NO Interactions"
 ####################All Residues Colored Table for NON bonded################################
 NH_templist4graph=[]
@@ -2888,7 +2888,7 @@ if bool(Ribose_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -2927,7 +2927,7 @@ if bool(Ribose_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -2947,10 +2947,10 @@ print """
 
 
 if bool(Ribose_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribose : H bonded################################
 
@@ -2974,7 +2974,7 @@ if bool(Ribose_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -3013,15 +3013,15 @@ if bool(Ribose_common_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 
 
 if bool(Ribose_CommonNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Ribose: NON bonded################################
 
@@ -3274,7 +3274,7 @@ print """
 ##############################
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Adenin Sub Group Structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Adenin sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -3324,10 +3324,10 @@ print """
 
 
 if bool(Adenin_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for Adenin: H bonded################################
 
@@ -3353,7 +3353,7 @@ if bool(Adenin_graphdicH):
             
     length_ofcell=max(length_listofcompiledresidues)   
     
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -3392,15 +3392,15 @@ if bool(Adenin_graphdicH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: hydrogen bonds contacts ","</p>"
     print "No Interactions"
 
 
 if bool(Adenin_allNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Residues: Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
 ####################All Residues Colored Table for NON bonded################################
 NH_templist4graph=[]
@@ -3427,7 +3427,7 @@ if bool(Adenin_graphdicNH):
             
     length_ofcell=max(length_listofcompiledresidues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -3466,7 +3466,7 @@ if bool(Adenin_graphdicNH):
         print "</tr>"
     print "</table>"
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of amino acids:Nonbonded Contacts","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of amino acids: non-bonded contacts","</p>"
     print "No Interactions"
 
 
@@ -3486,10 +3486,10 @@ print """
 
 
 if bool(Adenin_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Hydrogen bonds Contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "<p> No Common Interactions</p>"     
 ####################Common Residues Colored Table for Adenin : H bonded################################
 CommH_templist4graph=[]
@@ -3513,7 +3513,7 @@ if bool(Adenin_common_graphdicH):
     
     length_ofcell=max(length_listofcompiled_Common_residues)
     #print  "<br/>"
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<table border='1'>"
     print "<tr>"
     print "<th col width='60'>Ligand Atoms</th>" 
@@ -3554,15 +3554,15 @@ if bool(Adenin_common_graphdicH):
 
 
 else:
-    print "<p style='font-size:20px; color:brown'> Physicochemical property based coloring of Common amino acids:Hydrogen bonds Contacts ","</p>"
+    print "<p style='font-size:20px; color:brown'> Physicochemical property based color-coding of common amino acids: hydrogen bonds contacts ","</p>"
     print "<p> No Common Atoms Identified</p>" 
 
 
 if bool(Adenin_CommonNH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of Common Residues: Nonbonded Contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Adenin: NON bonded################################
 
