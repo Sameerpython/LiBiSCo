@@ -8,6 +8,7 @@ RUN apt-get install -y net-tools
 RUN apt-get install -y wget 
 RUN apt-get install -y sudo
 RUN apt-get install -y python2.7
+RUN apt-get install -y vim-tiny
 
 RUN mkdir -p /opt/bindingdata
 WORKDIR /opt/bindingdata				
@@ -17,6 +18,7 @@ RUN sudo /opt/bindingdata/xampp-linux-x64-7.3.9-0-installer.run
 
 RUN mkdir /opt/lampp/htdocs/LiBiSCo
 WORKDIR /opt/lampp/htdocs/LiBiSCo
+ADD httpd.conf /opt/lampp/etc/
 ADD *.py /opt/lampp/htdocs/LiBiSCo/
 RUN chmod +x /opt/lampp/htdocs/LiBiSCo/*.py
 
