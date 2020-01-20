@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/local/Anaconda2.7/bin/python2.7
 
 # Import modules for CGI handling 
 import cgi, cgitb 
@@ -22,7 +22,7 @@ print"""
 .images{
     width: 100%;
     height: 500px;
-    background-image: url('Pic.gif') ;
+    background-image: url('/opt/lampp/htdocs/LiBiSCo/Pic.gif') ;
     background-size: cover;
     padding-left: 80px;
     
