@@ -39,6 +39,10 @@ Finally, the results will be provided as tables for each of the substructure of 
 
 # Run in Docker
 
-* docker build -t bindingdata .
-* docker run -p 80:80 bindingdata:latest
-* docker run -p 80:80 -ti bindingdata:latest
+* sudo docker build -t libisco .
+
+### Non-interactive session
+* sudo docker run -p 80:80 libisco:latest
+
+### Interactive session
+* sudo docker run -p 80:80 -ti libisco:latest
