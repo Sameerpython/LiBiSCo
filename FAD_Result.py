@@ -2128,7 +2128,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Ribitol_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp'+Ribitol_graph_filename+'_NHbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     
