@@ -2579,7 +2579,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=phosphate_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp'+phosphate_graph_filename+'_Hbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
