@@ -9,6 +9,7 @@ RUN apt-get install -y wget
 RUN apt-get install -y sudo
 RUN apt-get install -y vim-tiny
 RUN apt-get install -y libgl1-mesa-glx
+RUN apt-get install cron
 
 RUN mkdir -p /opt/bindingdata
 WORKDIR /opt/bindingdata
@@ -26,10 +27,19 @@ RUN echo "PATH=/usr/local/Anaconda2.7/bin:$PATH" >> /etc/profile
 
 # Install python dependencies
 RUN /usr/local/Anaconda2.7/bin/conda install -y -c conda-forge biopython
-
 RUN export PATH=/usr/local/Anaconda2.7/bin:$PATH
 
+# Configure a con job to regularly remove SVG files
+RUN echo "* 21 * * * root rm /tmp/*.svg" >> /etc/crontab
+RUN echo "* 21 * * * root rm /tmp/*.zip" >> /etc/crontab
+
+# Install LiBiSCo
 RUN mkdir /opt/lampp/htdocs/LiBiSCo
+#RUN chmod 777 /opt/lampp/htdocs/LiBiSCo
+#RUN chmod 777 /opt/lampp/htdocs
+#RUN chmod 777 /opt/lampp
+#RUN chmod 777 /opt
+
 WORKDIR /opt/lampp/htdocs/LiBiSCo
 ADD httpd.conf /opt/lampp/etc/
 ADD *.py /opt/lampp/htdocs/LiBiSCo/
@@ -37,16 +47,6 @@ ADD *.gif /opt/lampp/htdocs/LiBiSCo/
 ADD *.png /opt/lampp/htdocs/LiBiSCo/
 RUN chmod +x /opt/lampp/htdocs/LiBiSCo/*.py
 
-# RUN echo -e "[Unit]\nDescription=XAMPP\n\n[Service]\nExecStart=/opt/lampp/lampp start\nExecStop=/opt/lampp/lampp stop\nType=forking\n\n[Install]\nWantedBy=multi-user.target"
-
-RUN echo -e "[Unit]\nDescription=XAMPP\n\n[Service] \n\
-ExecStart=/opt/lampp/lampp start\nExecStop=/opt/lampp/lampp stop \n\
-Type=forking\n\n[Install]\nWantedBy=multi-user.target" > /etc/systemd/system/xampp.service 
-
+# Start the server
 EXPOSE 80 
 CMD /opt/lampp/xampp start; sh 
-# write a startup script
-#RUN echo '/opt/lampp/xampp start' >> /startup.sh
-#RUN echo '/usr/bin/supervisord -n' >> /startup.sh
-
-#CMD ["sh", "/startup.sh"]
