@@ -1593,7 +1593,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Nicot_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp'+Nicot_graph_filename+'_NHbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     
