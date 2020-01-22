@@ -986,7 +986,7 @@ if bool(graphdic1_All_H):
     
         m = motifs.create(instances)
     
-        mymotif=All_H_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp'+All_H_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         All_H_weblogo_collection.append(mymotif)
         instances=[]
@@ -1203,7 +1203,7 @@ if bool(graphdic1_Common_H):
     
         m = motifs.create(instances)
     
-        mymotif=All_H_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp'+All_H_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Common_H_weblogo_collection.append(mymotif)
         instances=[]
@@ -1417,7 +1417,7 @@ if bool(graphdic1_All_NonH):
     
         m = motifs.create(instances)
         
-        mymotif=All_NonH_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp'+All_NonH_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         All_NonH_weblogo_collection.append(mymotif)
         instances=[]
@@ -1632,7 +1632,7 @@ if bool(graphdic1_Common_NonH):
         m = motifs.create(instances)
     
     
-        mymotif=Common_NonH_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp'+Common_NonH_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Common_NonH_weblogo_collection.append(mymotif)
         instances=[]
