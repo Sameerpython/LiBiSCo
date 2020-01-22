@@ -2046,7 +2046,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=Ribitol_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp'+Ribitol_graph_filename+'_Hbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
