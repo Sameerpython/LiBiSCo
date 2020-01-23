@@ -47,4 +47,4 @@ RUN chmod +x /opt/lampp/htdocs/LiBiSCo/*.py
 
 # Start the server
 EXPOSE 80 
-CMD /opt/lampp/xampp start; sh 
+CMD /opt/lampp/xampp start; service cron start; bash 
