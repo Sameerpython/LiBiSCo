@@ -22,7 +22,7 @@ print"""
 .images{
     width: 100%;
     height: 500px;
-    background-image: url('/opt/lampp/htdocs/LiBiSCo/Pic.gif') ;
+    background-image: url('Pic.gif') ;
     background-size: cover;
     padding-left: 80px;
     
