@@ -43,6 +43,7 @@ ADD httpd.conf /opt/lampp/etc/
 ADD *.py /opt/lampp/htdocs/LiBiSCo/
 ADD *.gif /opt/lampp/htdocs/LiBiSCo/
 ADD *.png /opt/lampp/htdocs/LiBiSCo/
+ADD *.jpg /opt/lampp/htdocs/LiBiSCo/
 RUN chmod +x /opt/lampp/htdocs/LiBiSCo/*.py
 
 # Start the server
