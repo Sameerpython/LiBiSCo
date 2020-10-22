@@ -1,4 +1,4 @@
-#!/usr/local/Anaconda2.7/bin/python2.7
+#!/usr/bin/python
 
 # Import modules for CGI handling 
 import cgi, cgitb
@@ -19,7 +19,7 @@ import uuid
 from Bio.Seq import Seq
 from Bio import motifs
 import string
-
+import xlsxwriter
 from Bio.Alphabet import IUPAC
 from zipfile import ZipFile
 
@@ -894,6 +894,13 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
      'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
      'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
+SubstructureExcel = str(uuid.uuid4())+'_CSV.csv'
+writer = pd.ExcelWriter(SubstructureExcel, engine='xlsxwriter')
+
+###Link to download file
+print '<p style=text-align:center >Download: <a href=%s download>Interaction Data</a>'% SubstructureExcel
+
+
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Adenin sub group structure","</p>"
 print "<p align='center'>################################################################"  ,"</p>"
@@ -1283,7 +1290,7 @@ if bool(CommH_graphdic1):
     
     
     
-    zipfilename=Adenin_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Adenin_graph_filename+'_Hbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1317,7 +1324,7 @@ if bool(CommH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif = Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -1365,7 +1372,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Adenin_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Adenin_graph_filename+'_NHbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     
@@ -1397,7 +1404,7 @@ if bool(CommNH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif = Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -1819,7 +1826,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=Ribose_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Ribose_graph_filename+'_Hbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1853,7 +1860,7 @@ if bool (CommH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif = Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -1901,7 +1908,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Ribose_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Ribose_graph_filename+'_NHbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     
@@ -1933,7 +1940,7 @@ if bool(CommNH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif = Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -2354,7 +2361,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=METHI_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+METHI_graph_filename+'_Hbonding'+'.zip'
     
     METHI_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2388,7 +2395,7 @@ if bool (CommH_graphdic1):
     
         METHI_motif = motifs.create(instances)
     
-        METHI_mymotif = METHI_graph_filename+ '_H_'+ METHI_ligand_key1 +'.svg'
+        METHI_mymotif ='/tmp/'+ METHI_graph_filename+ '_H_'+ METHI_ligand_key1 +'.svg'
         METHI_motif.weblogo('%s'%METHI_mymotif,format='SVG',xaxis_label= '%s' %METHI_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         METHI_weblogo_collection.append(METHI_mymotif)
         instances=[]
@@ -2436,7 +2443,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=METHI_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+METHI_graph_filename+'_NHbonding'+'.zip'
     
     METHI_aminoacid_singlecode={}
     
@@ -2468,7 +2475,7 @@ if bool(CommNH_graphdic1):
     
         METHI_motif = motifs.create(instances)
     
-        METHI_mymotif = METHI_graph_filename+ '_NH_'+ METHI_ligand_key1 +'.svg'
+        METHI_mymotif ='/tmp/'+ METHI_graph_filename+ '_NH_'+ METHI_ligand_key1 +'.svg'
         METHI_motif.weblogo('%s'%METHI_mymotif,format='SVG',xaxis_label= '%s' %METHI_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         METHI_weblogo_collection.append(METHI_mymotif)
         instances=[]
@@ -2496,8 +2503,33 @@ else:
     print "<p style='font-size:20px; color:brown'> Weblogo showing Common Nonbonded Interactions:</p>"
     print "No Interactions"
 
+#####To write the dataframes to excel for download
+Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
+Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
+Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
+Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
+Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
+Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
+Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
+Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
+Ribose_allH=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict)
+Ribose_allH.to_excel(writer, sheet_name='Ribose_allH')
+Ribose_allNH=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict)
+Ribose_allNH.to_excel(writer, sheet_name='Ribose_allNH')
+Ribose_CommonH=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict)
+Ribose_CommonH.to_excel(writer, sheet_name='Ribose_CommonH')
+Ribose_CommonNH=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict)
+Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
+METHI_allH=pd.DataFrame.from_dict(METHI_allH_Lig_Resdict)
+METHI_allH.to_excel(writer, sheet_name='METHI_allH')
+METHI_allNH=pd.DataFrame.from_dict(METHI_allNH_Lig_Resdict)
+METHI_allNH.to_excel(writer, sheet_name='METHI_allNH')
+METHI_CommonH=pd.DataFrame.from_dict(METHI_CommonH_Lig_Resdict)
+METHI_CommonH.to_excel(writer, sheet_name='METHI_CommonH')
+METHI_CommonNH=pd.DataFrame.from_dict(METHI_CommonNH_Lig_Resdict)
+METHI_CommonNH.to_excel(writer, sheet_name='METHI_CommonNH')
 
-
+writer.save()
 
 print """
         </div>
