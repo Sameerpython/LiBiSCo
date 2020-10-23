@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/local/Anaconda2.7/bin/python2.7
 
 # Import modules for CGI handling 
 import cgi, cgitb
