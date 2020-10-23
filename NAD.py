@@ -1,4 +1,4 @@
-#!/usr/local/Anaconda2.7/bin/python2.7
+#!/usr/bin/python
 
 # Import modules for CGI handling 
 import cgi, cgitb 
@@ -60,7 +60,7 @@ final_filename= take3[0]
 
 #capturing the entered pdb ids into list
 for i in text_content:
-        text_content1=text_content.strip()
+        text_content1=text_content.replace(' ', '')
         l=text_content1.split(',')
 f2_list=[]
 combined_list=[]
