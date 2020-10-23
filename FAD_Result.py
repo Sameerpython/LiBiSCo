@@ -1,4 +1,4 @@
-#!/usr/local/Anaconda2.7/bin/python2.7
+#!/usr/bin/python
 
 # Import modules for CGI handling 
 import cgi, cgitb
@@ -19,7 +19,7 @@ import uuid
 from Bio.Seq import Seq
 from Bio import motifs
 import string
-
+import xlsxwriter
 from Bio.Alphabet import IUPAC
 from zipfile import ZipFile
 
@@ -157,8 +157,6 @@ Ribose=sorted(['O5B','C5B','C4B','O4B','C1B','C2B','O2B','C3B','O3B'])
 Adenin=sorted(['N6','N1','C2','N3','C4','C5','C6','N7','C8','N9'])
 
 #SUbstructure section ends here
-
-
 
 # Information of the selected ligands and PDB ids from LigPage.py
 variable = ""
@@ -1131,6 +1129,11 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
      'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
      'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
+SubstructureExcel = str(uuid.uuid4())+'_CSV.csv'
+writer = pd.ExcelWriter(SubstructureExcel, engine='xlsxwriter')
+
+###Link to download file
+print '<p style=text-align:center >Download: <a href=%s download>Interaction Data</a>'% SubstructureExcel
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Nicot sub group structure","</p>"
@@ -1511,7 +1514,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=Nicot_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Nicot_graph_filename+'_Hbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1545,7 +1548,7 @@ if bool (CommH_graphdic1):
     
         Nicot_motif = motifs.create(instances)
     
-        Nicot_mymotif = Nicot_graph_filename+ '_H_'+ Nicot_ligand_key1 +'.svg'
+        Nicot_mymotif ='/tmp/'+ Nicot_graph_filename+ '_H_'+ Nicot_ligand_key1 +'.svg'
         Nicot_motif.weblogo('%s'%Nicot_mymotif,format='SVG',xaxis_label= '%s' %Nicot_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
@@ -1593,7 +1596,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Nicot_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Nicot_graph_filename+'_NHbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     
@@ -1625,7 +1628,7 @@ if bool(CommNH_graphdic1):
     
         Nicot_motif = motifs.create(instances)
     
-        Nicot_mymotif = Nicot_graph_filename+ '_NH_'+ Nicot_ligand_key1 +'.svg'
+        Nicot_mymotif ='/tmp/'+ Nicot_graph_filename+ '_NH_'+ Nicot_ligand_key1 +'.svg'
         Nicot_motif.weblogo('%s'%Nicot_mymotif,format='SVG',xaxis_label= '%s' %Nicot_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
@@ -2046,7 +2049,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=Ribitol_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Ribitol_graph_filename+'_Hbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2080,7 +2083,7 @@ if bool (CommH_graphdic1):
     
         Ribitol_motif = motifs.create(instances)
     
-        Ribitol_mymotif = Ribitol_graph_filename+ '_H_'+ Ribitol_ligand_key1 +'.svg'
+        Ribitol_mymotif ='/tmp/'+ Ribitol_graph_filename+ '_H_'+ Ribitol_ligand_key1 +'.svg'
         Ribitol_motif.weblogo('%s'%Ribitol_mymotif,format='SVG',xaxis_label= '%s' %Ribitol_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
@@ -2128,7 +2131,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Ribitol_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Ribitol_graph_filename+'_NHbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     
@@ -2160,7 +2163,7 @@ if bool(CommNH_graphdic1):
     
         Ribitol_motif = motifs.create(instances)
     
-        Ribitol_mymotif = Ribitol_graph_filename+ '_NH_'+ Ribitol_ligand_key1 +'.svg'
+        Ribitol_mymotif ='/tmp/'+ Ribitol_graph_filename+ '_NH_'+ Ribitol_ligand_key1 +'.svg'
         Ribitol_motif.weblogo('%s'%Ribitol_mymotif,format='SVG',xaxis_label= '%s' %Ribitol_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
@@ -2579,7 +2582,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=phosphate_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+phosphate_graph_filename+'_Hbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2613,7 +2616,7 @@ if bool (CommH_graphdic1):
     
         phosphate_motif = motifs.create(instances)
     
-        phosphate_mymotif = phosphate_graph_filename+ '_H_'+ phosphate_ligand_key1 +'.svg'
+        phosphate_mymotif ='/tmp/'+ phosphate_graph_filename+ '_H_'+ phosphate_ligand_key1 +'.svg'
         phosphate_motif.weblogo('%s'%phosphate_mymotif,format='SVG',xaxis_label= '%s' %phosphate_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
@@ -2661,7 +2664,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=phosphate_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+phosphate_graph_filename+'_NHbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     
@@ -2693,7 +2696,7 @@ if bool(CommNH_graphdic1):
     
         phosphate_motif = motifs.create(instances)
     
-        phosphate_mymotif = phosphate_graph_filename+ '_NH_'+ phosphate_ligand_key1 +'.svg'
+        phosphate_mymotif ='/tmp/'+ phosphate_graph_filename+ '_NH_'+ phosphate_ligand_key1 +'.svg'
         phosphate_motif.weblogo('%s'%phosphate_mymotif,format='SVG',xaxis_label= '%s' %phosphate_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
@@ -3118,7 +3121,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename=Ribose_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Ribose_graph_filename+'_Hbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -3152,7 +3155,7 @@ if bool (CommH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif = Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -3200,7 +3203,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Ribose_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Ribose_graph_filename+'_NHbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     
@@ -3232,7 +3235,7 @@ if bool(CommNH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif = Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -3662,7 +3665,7 @@ if bool(CommH_graphdic1):
     
     
     
-    zipfilename=Adenin_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Adenin_graph_filename+'_Hbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -3696,7 +3699,7 @@ if bool(CommH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif = Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -3744,7 +3747,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename=Adenin_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Adenin_graph_filename+'_NHbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     
@@ -3776,7 +3779,7 @@ if bool(CommNH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif = Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -3805,7 +3808,49 @@ else:
     print "No Interactions"
 
 
+###########To write the dataframes to excel for download
+Nicot_allH=pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict)
+Nicot_allH.to_excel(writer, sheet_name='Nicot_allH')
+Nicot_allNH=pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict)
+Nicot_allNH.to_excel(writer, sheet_name='Nicot_allNH')
+Nicot_CommonH=pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict)
+Nicot_CommonH.to_excel(writer, sheet_name='Nicot_CommonH')
+Nicot_CommonNH=pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict)
+Nicot_CommonNH.to_excel(writer, sheet_name='Nicot_CommonNH')
+Ribitol_allH=pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict)
+Ribitol_allH.to_excel(writer, sheet_name='Ribitol_allH')
+Ribitol_allNH=pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict)
+Ribitol_allNH.to_excel(writer, sheet_name='Ribitol_allNH')
+Ribitol_CommonH=pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict)
+Ribitol_CommonH.to_excel(writer, sheet_name='Ribitol_CommonH')
+Ribitol_CommonNH=pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict)
+Ribitol_CommonNH.to_excel(writer, sheet_name='Ribitol_CommonNH')
+phosphate_allH=pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict)
+phosphate_allH.to_excel(writer, sheet_name='phosphate_allH')
+phosphate_allNH=pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict)
+phosphate_allNH.to_excel(writer, sheet_name='phosphate_allNH')
+phosphate_CommonH=pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict)
+phosphate_CommonH.to_excel(writer, sheet_name='phosphate_CommonH')
+phosphate_CommonNH=pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict)
+phosphate_CommonNH.to_excel(writer, sheet_name='phosphate_CommonNH')
+Ribose_allH=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict)
+Ribose_allH.to_excel(writer, sheet_name='Ribose_allH')
+Ribose_allNH=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict)
+Ribose_allNH.to_excel(writer, sheet_name='Ribose_allNH')
+Ribose_CommonH=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict)
+Ribose_CommonH.to_excel(writer, sheet_name='Ribose_CommonH')
+Ribose_CommonNH=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict)
+Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
+Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
+Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
+Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
+Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
+Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
+Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
+Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
+Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
 
+writer.save()
 
 print """
         </div>

@@ -27,7 +27,7 @@ print"""
     padding-left: 80px;
     
 }
-}
+
 """
 #########
 
