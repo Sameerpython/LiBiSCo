@@ -35,6 +35,7 @@ RUN echo "* 0 * * * root rm /opt/lampp/htdocs/LiBiSCo/*.zip" >> /etc/crontab
 
 # Install LiBiSCo
 RUN mkdir /opt/lampp/htdocs/LiBiSCo
+RUN mkdir /opt/lampp/htdocs/LiBiSCo/tmp
 RUN chmod 775 /opt/lampp/htdocs/LiBiSCo
 RUN chgrp -R daemon /opt/lampp/htdocs/LiBiSCo
 
