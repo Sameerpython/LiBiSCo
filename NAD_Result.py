@@ -18,7 +18,6 @@ import matplotlib.pyplot as plt
 import uuid
 from Bio.Seq import Seq
 from Bio import motifs
-import xlsxwriter
 from Bio.Alphabet import IUPAC
 from zipfile import ZipFile
 from collections import OrderedDict
@@ -1130,14 +1129,80 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
      'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
      'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
-SubstructureExcel = str(uuid.uuid4())+'_CSV.csv'
-writer = pd.ExcelWriter(SubstructureExcel, engine='xlsxwriter')
+### List of filenames for csv download ##########
+CSVrandom_name= str(uuid.uuid4())
+Nicot_allH='/tmp/'+' Nicot_allH' +CSVrandom_name+'.csv'
+Nicot_allNH='/tmp/'+' Nicot_allNH' +CSVrandom_name+'.csv'
+Nicot_CommonH='/tmp/'+' Nicot_CommonH' +CSVrandom_name+'.csv'
+Nicot_CommonNH='/tmp/'+' Nicot_CommonNH' +CSVrandom_name+'.csv'
+Ribitol_allH='/tmp/'+' Ribitol_allH' +CSVrandom_name+'.csv'
+Ribitol_allNH='/tmp/'+' Ribitol_allNH' +CSVrandom_name+'.csv'
+Ribitol_CommonH='/tmp/'+' Ribitol_CommonH' +CSVrandom_name+'.csv'
+Ribitol_CommonNH='/tmp/'+' Ribitol_CommonNH' +CSVrandom_name+'.csv'
+phosphate_allH='/tmp/'+' phosphate_allH' +CSVrandom_name+'.csv'
+phosphate_allNH='/tmp/'+' phosphate_allNH' +CSVrandom_name+'.csv'
+phosphate_CommonH='/tmp/'+' phosphate_CommonH' +CSVrandom_name+'.csv'
+phosphate_CommonNH='/tmp/'+' phosphate_CommonNH' +CSVrandom_name+'.csv'
+Ribose_allH='/tmp/'+' Ribose_allH' +CSVrandom_name+'.csv'
+Ribose_allNH='/tmp/'+' Ribose_allNH' +CSVrandom_name+'.csv'
+Ribose_CommonH='/tmp/'+' Ribose_CommonH' +CSVrandom_name+'.csv'
+Ribose_CommonNH='/tmp/'+' Ribose_CommonNH' +CSVrandom_name+'.csv'
+Adenin_allH='/tmp/'+' Adenin_allH' +CSVrandom_name+'.csv'
+Adenin_allNH='/tmp/'+' Adenin_allNH' +CSVrandom_name+'.csv'
+Adenin_CommonH='/tmp/'+' Adenin_CommonH' +CSVrandom_name+'.csv'
+Adenin_CommonNH='/tmp/'+' Adenin_CommonNH' +CSVrandom_name+'.csv'
+    #### dict to csv ###
+Nicot_allH_df=pd.DataFrame(Nicot_allH_Lig_Resdict)
+Nicot_allH_df.to_csv(Nicot_allH)
+Nicot_allNH_df=pd.DataFrame(Nicot_allNH_Lig_Resdict)
+Nicot_allNH_df.to_csv(Nicot_allNH)
+Nicot_CommonH_df=pd.DataFrame(Nicot_CommonH_Lig_Resdict)
+Nicot_CommonH_df.to_csv(Nicot_CommonH)
+Nicot_CommonNH_df=pd.DataFrame(Nicot_CommonNH_Lig_Resdict)
+Nicot_CommonNH_df.to_csv(Nicot_CommonNH)
+Ribitol_allH_df=pd.DataFrame(Ribitol_allH_Lig_Resdict)
+Ribitol_allH_df.to_csv(Ribitol_allH)
+Ribitol_allNH_df=pd.DataFrame(Ribitol_allNH_Lig_Resdict)
+Ribitol_allNH_df.to_csv(Ribitol_allNH)
+Ribitol_CommonH_df=pd.DataFrame(Ribitol_CommonH_Lig_Resdict)
+Ribitol_CommonH_df.to_csv(Ribitol_CommonH)
+Ribitol_CommonNH_df=pd.DataFrame(Ribitol_CommonNH_Lig_Resdict)
+Ribitol_CommonNH_df.to_csv(Ribitol_CommonNH)
+phosphate_allH_df=pd.DataFrame(phosphate_allH_Lig_Resdict)
+phosphate_allH_df.to_csv(phosphate_allH)
+phosphate_allNH_df=pd.DataFrame(phosphate_allNH_Lig_Resdict)
+phosphate_allNH_df.to_csv(phosphate_allNH)
+phosphate_CommonH_df=pd.DataFrame(phosphate_CommonH_Lig_Resdict)
+phosphate_CommonH_df.to_csv(phosphate_CommonH)
+phosphate_CommonNH_df=pd.DataFrame(phosphate_CommonNH_Lig_Resdict)
+phosphate_CommonNH_df.to_csv(phosphate_CommonNH)
+Ribose_allH_df=pd.DataFrame(Ribose_allH_Lig_Resdict)
+Ribose_allH_df.to_csv(Ribose_allH)
+Ribose_allNH_df=pd.DataFrame(Ribose_allNH_Lig_Resdict)
+Ribose_allNH_df.to_csv(Ribose_allNH)
+Ribose_CommonH_df=pd.DataFrame(Ribose_CommonH_Lig_Resdict)
+Ribose_CommonH_df.to_csv(Ribose_CommonH)
+Ribose_CommonNH_df=pd.DataFrame(Ribose_CommonNH_Lig_Resdict)
+Ribose_CommonNH_df.to_csv(Ribose_CommonNH)
+Adenin_allH_df=pd.DataFrame(Adenin_allH_Lig_Resdict)
+Adenin_allH_df.to_csv(Adenin_allH)
+Adenin_allNH_df=pd.DataFrame(Adenin_allNH_Lig_Resdict)
+Adenin_allNH_df.to_csv(Adenin_allNH)
+Adenin_CommonH_df=pd.DataFrame(Adenin_CommonH_Lig_Resdict)
+Adenin_CommonH_df.to_csv(Adenin_CommonH)
+Adenin_CommonNH_df=pd.DataFrame(Adenin_CommonNH_Lig_Resdict)
+Adenin_CommonNH_df.to_csv(Adenin_CommonNH)
 
-###Link to download file
-print '<p style=text-align:center >Download: <a href=%s download>Interaction Data</a>'% SubstructureExcel
+#############END of filenames for csv download  ############
+
+
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Nicot sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% Nicot_allH
+print ' <a href=%s download>All non-bonded,</a>'% Nicot_allNH
+print ' <a href=%s download>Common bonded,</a>'% Nicot_CommonH
+print ' <a href=%s download>Common non-bonded,</a>'% Nicot_CommonNH ,'</p>'
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -1672,6 +1737,10 @@ print """
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Ribitol sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% Ribitol_allH
+print ' <a href=%s download>All non-bonded,</a>'% Ribitol_allNH
+print ' <a href=%s download>Common bonded,</a>'% Ribitol_CommonH
+print ' <a href=%s download>Common non-bonded,</a>'% Ribitol_CommonNH ,'</p>'
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -2206,6 +2275,10 @@ print """
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>phosphate sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% phosphate_allH
+print ' <a href=%s download>All non-bonded,</a>'% phosphate_allNH
+print ' <a href=%s download>Common bonded,</a>'% phosphate_CommonH
+print ' <a href=%s download>Common non-bonded,</a>'% phosphate_CommonNH ,'</p>'
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -2744,6 +2817,10 @@ print """
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Ribose sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% Ribose_allH
+print ' <a href=%s download>All non-bonded,</a>'% Ribose_allNH
+print ' <a href=%s download>Common bonded,</a>'% Ribose_CommonH
+print ' <a href=%s download>Common non-bonded,</a>'% Ribose_CommonNH ,'</p>'
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -3279,6 +3356,10 @@ print """
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Adenin sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% Adenin_allH
+print ' <a href=%s download>All non-bonded,</a>'% Adenin_allNH
+print ' <a href=%s download>Common bonded,</a>'% Adenin_CommonH
+print ' <a href=%s download>Common non-bonded,</a>'% Adenin_CommonNH ,'</p>'
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. Compiled Bonded Interactions - Click to read Basic Statistics Information</button>"#Start of click drop down
@@ -3809,49 +3890,8 @@ else:
     print "No Interactions"
 
 
-###########To write the dataframes to excel for download
-Nicot_allH=pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict)
-Nicot_allH.to_excel(writer, sheet_name='Nicot_allH')
-Nicot_allNH=pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict)
-Nicot_allNH.to_excel(writer, sheet_name='Nicot_allNH')
-Nicot_CommonH=pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict)
-Nicot_CommonH.to_excel(writer, sheet_name='Nicot_CommonH')
-Nicot_CommonNH=pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict)
-Nicot_CommonNH.to_excel(writer, sheet_name='Nicot_CommonNH')
-Ribitol_allH=pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict)
-Ribitol_allH.to_excel(writer, sheet_name='Ribitol_allH')
-Ribitol_allNH=pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict)
-Ribitol_allNH.to_excel(writer, sheet_name='Ribitol_allNH')
-Ribitol_CommonH=pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict)
-Ribitol_CommonH.to_excel(writer, sheet_name='Ribitol_CommonH')
-Ribitol_CommonNH=pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict)
-Ribitol_CommonNH.to_excel(writer, sheet_name='Ribitol_CommonNH')
-phosphate_allH=pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict)
-phosphate_allH.to_excel(writer, sheet_name='phosphate_allH')
-phosphate_allNH=pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict)
-phosphate_allNH.to_excel(writer, sheet_name='phosphate_allNH')
-phosphate_CommonH=pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict)
-phosphate_CommonH.to_excel(writer, sheet_name='phosphate_CommonH')
-phosphate_CommonNH=pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict)
-phosphate_CommonNH.to_excel(writer, sheet_name='phosphate_CommonNH')
-Ribose_allH=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict)
-Ribose_allH.to_excel(writer, sheet_name='Ribose_allH')
-Ribose_allNH=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict)
-Ribose_allNH.to_excel(writer, sheet_name='Ribose_allNH')
-Ribose_CommonH=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict)
-Ribose_CommonH.to_excel(writer, sheet_name='Ribose_CommonH')
-Ribose_CommonNH=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict)
-Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
-Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
-Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
-Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
-Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
-Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
-Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
-Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
-Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
 
-writer.save()
+
 
 
 print """
