@@ -153,7 +153,7 @@ print """
 ############End of style for collapsible content###
 print "</style>"
 
-print "<title>CoFactComp</title>"
+print "<title>LiBiSCo</title>"
 
 ###JMOLscript source
 print "<script type='text/javascript' src='Jmol.js'></script>"
@@ -161,7 +161,7 @@ print "<script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></scrip
 print "<script type='text/javascript' src='http://mpld3.github.io/js/mpld3.v0.2.js'></script>"
 #####End of JMOLscript source
 print "</head>"
-print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
+#print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
 print "<img src='Title_image1.png' align='middle' width='1000' height='300'"
 print "</div>"
