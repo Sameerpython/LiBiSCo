@@ -40,9 +40,9 @@ print ".footer { position: absolute; left: 0; bottom: 0; width: 100%; height:60p
 print "</style>"
 #Style ends here
 
-print "<title>CoFactComp</title>"
+print "<title>LiBiSCo</title>"
 print "</head>"
-print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
+#print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
 print "<img src='Title_image1.png' align='middle' width='1000' height='200'"
 print "</div>"
