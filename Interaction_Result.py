@@ -796,8 +796,8 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
      'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
      'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
-All_Bonded_CSVfilename = str(uuid.uuid4())+'_AllBondedCSV.csv'
-Common_Bonded_CSVfilename = str(uuid.uuid4())+'_CommonBondedCSV.csv'
+All_Bonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_AllBondedCSV.csv'
+Common_Bonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_CommonBondedCSV.csv'
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>H - Bonded Interaction","</p>"
@@ -1254,8 +1254,8 @@ print """
 </div>
 """#closing of second grid and third column
 
-All_NonBonded_CSVfilename = str(uuid.uuid4())+'_AllNonBondedCSV.csv'
-Common_NonBonded_CSVfilename = str(uuid.uuid4())+'_CommonNonBondedCSV.csv'
+All_NonBonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_AllNonBondedCSV.csv'
+Common_NonBonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_CommonNonBondedCSV.csv'
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Non-bonded Interaction","</p>"

@@ -19,7 +19,6 @@ import uuid
 from Bio.Seq import Seq
 from Bio import motifs
 import string
-import xlsxwriter
 from Bio.Alphabet import IUPAC
 from zipfile import ZipFile
 
@@ -173,7 +172,7 @@ for key in form.keys():
 #        print "is", value
         value_dict.setdefault('%s'%variable,[]).append(value)
         r += "<p>"+ variable +", "+ value +"</p>\n"
-print "<p style='font-size:20px; color:blue'>  Results for the selected PDBID's and Ligands: ",'\n'.join("{}:{}".format(k,v) for k,v in value_dict.items()),"</p>","<br/>"
+print "<p style='font-size:20px; text-align:center; color:blue'>  Results for the selected PDBID's and Ligands: ",'\n'.join("{}:{}".format(k,v) for k,v in value_dict.items()),"</p>","<br/>"
 
 
 pdbsum_URL="http://www.ebi.ac.uk/thornton-srv/databases/cgi-bin/pdbsum/GetPage.pl?pdbcode="
@@ -894,15 +893,64 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
      'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
      'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
-SubstructureExcel = str(uuid.uuid4())+'_CSV.csv'
-writer = pd.ExcelWriter(SubstructureExcel, engine='xlsxwriter')
+
+### List of filenames for csv download ##########
+CSVrandom_name= str(uuid.uuid4())
+
+Adenin_allH='/tmp/'+' Adenin_allH' +CSVrandom_name+'.csv'
+Adenin_allNH='/tmp/'+' Adenin_allNH' +CSVrandom_name+'.csv'
+Adenin_CommonH='/tmp/'+' Adenin_CommonH' +CSVrandom_name+'.csv'
+Adenin_CommonNH='/tmp/'+' Adenin_CommonNH' +CSVrandom_name+'.csv'
+Ribose_allH='/tmp/'+' Ribose_allH' +CSVrandom_name+'.csv'
+Ribose_allNH='/tmp/'+' Ribose_allNH' +CSVrandom_name+'.csv'
+Ribose_CommonH='/tmp/'+' Ribose_CommonH' +CSVrandom_name+'.csv'
+Ribose_CommonNH='/tmp/'+' Ribose_CommonNH' +CSVrandom_name+'.csv'
+METHI_allH='/tmp/'+' METHI_allH' +CSVrandom_name+'.csv'
+METHI_allNH='/tmp/'+' METHI_allNH' +CSVrandom_name+'.csv'
+METHI_CommonH='/tmp/'+' METHI_CommonH' +CSVrandom_name+'.csv'
+METHI_CommonNH='/tmp/'+' METHI_CommonNH' +CSVrandom_name+'.csv'
+
+  #### dict to csv ###
+Adenin_allH_df=pd.DataFrame(Adenin_allH_Lig_Resdict)
+Adenin_allH_df.to_csv(Adenin_allH)
+Adenin_allNH_df=pd.DataFrame(Adenin_allNH_Lig_Resdict)
+Adenin_allNH_df.to_csv(Adenin_allNH)
+Adenin_CommonH_df=pd.DataFrame(Adenin_CommonH_Lig_Resdict)
+Adenin_CommonH_df.to_csv(Adenin_CommonH)
+Adenin_CommonNH_df=pd.DataFrame(Adenin_CommonNH_Lig_Resdict)
+Adenin_CommonNH_df.to_csv(Adenin_CommonNH)
+Ribose_allH_df=pd.DataFrame(Ribose_allH_Lig_Resdict)
+Ribose_allH_df.to_csv(Ribose_allH)
+Ribose_allNH_df=pd.DataFrame(Ribose_allNH_Lig_Resdict)
+Ribose_allNH_df.to_csv(Ribose_allNH)
+Ribose_CommonH_df=pd.DataFrame(Ribose_CommonH_Lig_Resdict)
+Ribose_CommonH_df.to_csv(Ribose_CommonH)
+Ribose_CommonNH_df=pd.DataFrame(Ribose_CommonNH_Lig_Resdict)
+Ribose_CommonNH_df.to_csv(Ribose_CommonNH)
+METHI_allH_df=pd.DataFrame(METHI_allH_Lig_Resdict)
+METHI_allH_df.to_csv(METHI_allH)
+METHI_allNH_df=pd.DataFrame(METHI_allNH_Lig_Resdict)
+METHI_allNH_df.to_csv(METHI_allNH)
+METHI_CommonH_df=pd.DataFrame(METHI_CommonH_Lig_Resdict)
+METHI_CommonH_df.to_csv(METHI_CommonH)
+METHI_CommonNH_df=pd.DataFrame(METHI_CommonNH_Lig_Resdict)
+METHI_CommonNH_df.to_csv(METHI_CommonNH)
+
+#############END of filenames for csv download  ############
+
+
 
 ###Link to download file
-print '<p style=text-align:center >Download: <a href=%s download>Interaction Data</a>'% SubstructureExcel
+#print '<p style=text-align:center >Download: <a href=%s download>Interaction Data</a>'% SubstructureExcel
 
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Adenin sub group structure","</p>"
+
+print '<p style=text-align:center >Download: <a href=%s download>All bonded, </a>' % Adenin_allH
+print ' <a href=%s download>All non-bonded, </a>' % Adenin_allNH
+print ' <a href=%s download>Common bonded, </a>' % Adenin_CommonH
+print ' <a href=%s download>Common non-bonded</a>' % Adenin_CommonNH,"</p>"
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. All bonded interactions - Click to read basic statistical information</button>"#Start of click drop down
@@ -1448,6 +1496,11 @@ print """
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Ribose sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All Bonded,</a>' % Ribose_allH
+print ' <a href=%s download>All Non-bonded,</a>' % Ribose_allNH
+print ' <a href=%s download>Common Bonded,</a>' % Ribose_CommonH
+print ' <a href=%s download>Common Non-bonded,</a>' % Ribose_CommonNH ,'</p>'
+
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. All bonded interactions - Click to read basic statistical information</button>"#Start of click drop down
@@ -1984,6 +2037,10 @@ print """
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>METHI sub group structure","</p>"
+print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% METHI_allH
+print ' <a href=%s download>All non-bonded,</a>'% METHI_allNH
+print ' <a href=%s download>Common bonded,</a>'% METHI_CommonH
+print ' <a href=%s download>Common non-bonded,</a>'% METHI_CommonNH ,'</p>'
 print "<p align='center'>################################################################"  ,"</p>"
 
 print "<button class='collapsible'>I. All bonded interactions - Click to read basic statistical information</button>"#Start of click drop down
@@ -2504,32 +2561,56 @@ else:
     print "No Interactions"
 
 #####To write the dataframes to excel for download
-Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
-Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
-Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
-Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
-Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
-Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
-Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
-Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
-Ribose_allH=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict)
-Ribose_allH.to_excel(writer, sheet_name='Ribose_allH')
-Ribose_allNH=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict)
-Ribose_allNH.to_excel(writer, sheet_name='Ribose_allNH')
-Ribose_CommonH=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict)
-Ribose_CommonH.to_excel(writer, sheet_name='Ribose_CommonH')
-Ribose_CommonNH=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict)
-Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
-METHI_allH=pd.DataFrame.from_dict(METHI_allH_Lig_Resdict)
-METHI_allH.to_excel(writer, sheet_name='METHI_allH')
-METHI_allNH=pd.DataFrame.from_dict(METHI_allNH_Lig_Resdict)
-METHI_allNH.to_excel(writer, sheet_name='METHI_allNH')
-METHI_CommonH=pd.DataFrame.from_dict(METHI_CommonH_Lig_Resdict)
-METHI_CommonH.to_excel(writer, sheet_name='METHI_CommonH')
-METHI_CommonNH=pd.DataFrame.from_dict(METHI_CommonNH_Lig_Resdict)
-METHI_CommonNH.to_excel(writer, sheet_name='METHI_CommonNH')
+# Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
+# Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
+# Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
+# Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
+# Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
+# Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
+# Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
+# Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
+# Ribose_allH=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict)
+# Ribose_allH.to_excel(writer, sheet_name='Ribose_allH')
+# Ribose_allNH=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict)
+# Ribose_allNH.to_excel(writer, sheet_name='Ribose_allNH')
+# Ribose_CommonH=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict)
+# Ribose_CommonH.to_excel(writer, sheet_name='Ribose_CommonH')
+# Ribose_CommonNH=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict)
+# Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
+# METHI_allH=pd.DataFrame.from_dict(METHI_allH_Lig_Resdict)
+# METHI_allH.to_excel(writer, sheet_name='METHI_allH')
+# METHI_allNH=pd.DataFrame.from_dict(METHI_allNH_Lig_Resdict)
+# METHI_allNH.to_excel(writer, sheet_name='METHI_allNH')
+# METHI_CommonH=pd.DataFrame.from_dict(METHI_CommonH_Lig_Resdict)
+# METHI_CommonH.to_excel(writer, sheet_name='METHI_CommonH')
+# METHI_CommonNH=pd.DataFrame.from_dict(METHI_CommonNH_Lig_Resdict)
+# METHI_CommonNH.to_excel(writer, sheet_name='METHI_CommonNH')
 
-writer.save()
+# writer.save()
+CSVrandom_name= str(uuid.uuid4())
+
+dir = os.path.join("CSV",CSVrandom_name)
+if not os.path.exists(dir):
+    oldmask = os.umask(000)
+    os.makedirs(dir,0777)
+    os.umask(oldmask)
+
+
+
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
+DownloadZipFilename= CSV/CSVrandom_name+'.zip'
+
+folderToZip=CSV/CSVrandom_name
+zipf = zipfile.ZipFile(DownloadZipFilename, 'w', zipfile.ZIP_DEFLATED)
+zipdir(folderToZip, zipf)
+zipf.close()
+
+
 
 print """
         </div>
