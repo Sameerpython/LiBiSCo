@@ -1,4 +1,4 @@
-#!/usr/local/Anaconda2.7/bin/python2.7
+#!/usr/bin/python
 
 # Import modules for CGI handling 
 import cgi, cgitb 
@@ -40,9 +40,9 @@ print ".footer { position: absolute; left: 0; bottom: 0; width: 100%; height:60p
 print "</style>"
 #Style ends here
 
-print "<title>LiBiSCo</title>"
+print "<title>CoFactComp</title>"
 print "</head>"
-#print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
+print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
 print "<img src='Title_image1.png' align='middle' width='1000' height='200'"
 print "</div>"
@@ -57,7 +57,7 @@ print "<p> Select ligand of interest for the PDB IDs listed to compare the bindi
 #print lig_content
 #capturing the entered pdb ids into list
 for i in text_content:
-        text_content1=text_content.strip()
+        text_content1=text_content.replace(' ', '')
         l=text_content1.split(',')
 #print l
 f2_list=[]
