@@ -30,12 +30,13 @@ RUN /usr/local/Anaconda2.7/bin/conda install -y -c conda-forge biopython
 RUN export PATH=/usr/local/Anaconda2.7/bin:$PATH
 
 # Configure a con job to regularly remove SVG files
-RUN echo "* 0 * * * root rm /opt/lampp/htdocs/LiBiSCo/*.svg" >> /etc/crontab
-RUN echo "* 0 * * * root rm /opt/lampp/htdocs/LiBiSCo/*.zip" >> /etc/crontab
+RUN echo "* 0 * * * root rm /opt/lampp/htdocs/LiBiSCo/tmp/*.svg" >> /etc/crontab
+RUN echo "* 0 * * * root rm /opt/lampp/htdocs/LiBiSCo/tmp/*.zip" >> /etc/crontab
 
 # Install LiBiSCo
 RUN mkdir /opt/lampp/htdocs/LiBiSCo
 RUN mkdir /opt/lampp/htdocs/LiBiSCo/tmp
+RUN chmod 775 /opt/lampp/htdocs/LiBiSCo/tmp
 RUN chmod 775 /opt/lampp/htdocs/LiBiSCo
 RUN chgrp -R daemon /opt/lampp/htdocs/LiBiSCo
 
