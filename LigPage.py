@@ -31,6 +31,18 @@ print "<head>"
 
 #HTML style details for web page
 print "<style>"
+
+print"""
+.images{
+    width: 100%;
+    height: 500px;
+    background-image: url('Pic.gif') ;
+    background-size: cover;
+    padding-left: 80px;
+    
+}
+"""
+
 print "ul{list-style-type: none;margin: 0;padding: 0; overflow: hidden;background-color: #333333;}"
 print "li{float:left;}"
 print "li a {display: block;color: white;text-align: center;padding: 16px;font-size:20px; text-decoration: none;}"
@@ -44,7 +56,7 @@ print "<title>LiBiSCo</title>"
 print "</head>"
 #print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
-print "<img src='Title_image1.png' align='middle' width='1000' height='200'"
+#print "<img src='Title_image1.png' align='middle' width='1000' height='200'"
 print "</div>"
 print "<body>"
 print "<ul>"
