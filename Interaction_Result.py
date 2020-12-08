@@ -150,6 +150,11 @@ print """
 
 """
 
+
+
+
+
+
 ############End of style for collapsible content###
 print "</style>"
 
