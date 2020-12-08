@@ -149,7 +149,16 @@ print """
 
 
 """
-
+print"""
+.images{
+    width: 100%;
+    height: 500px;
+    background-image: url('Pic.gif') ;
+    background-size: cover;
+    padding-left: 80px;
+    
+}
+"""
 
 
 
@@ -168,7 +177,7 @@ print "<script type='text/javascript' src='http://mpld3.github.io/js/mpld3.v0.2.
 print "</head>"
 print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
-print "<img src='Title_image1.png' align='middle' width='1000' height='300'"
+#print "<img src='Title_image1.png' align='middle' width='1000' height='300'"
 print "</div>"
 print "<body>"
 print "<ul>"
