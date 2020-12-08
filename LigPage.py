@@ -57,7 +57,7 @@ print "<p> Select ligand of interest for the PDB IDs listed to compare the bindi
 #print lig_content
 #capturing the entered pdb ids into list
 for i in text_content:
-        text_content1=text_content.strip()
+        text_content1=text_content.replace(' ', '')
         l=text_content1.split(',')
 #print l
 f2_list=[]
