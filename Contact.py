@@ -1,5 +1,4 @@
-#!/usr/local/Anaconda2.7/bin/python2.7
-# -*- coding: utf-8 -*-
+#!/usr/bin/python
 
 # Import modules for CGI handling 
 import cgi, cgitb 
@@ -98,7 +97,7 @@ print "<IMG SRC='HA.jpg' ALIGN='top' width=120px height=120px >"
 print "<p><b>Professor Henrik Aronsson</b></p>"
 print  "<p>Head of Department</p>"
 print "<p>Department of Biological & Environmental Sciences</p>"
-print "<p>Email: &#104;&#101;&#110;&#114;&#105;&#107;&#046;&#097;&#114;&#111;&#110;&#115;&#115;&#111;&#110;&#064;&#098;&#105;&#111;&#101;&#110;&#118;&#046;&#103;&#117;&#046;&#115;&#101;</p>"
+print "<p>Email: henrik.aronsson@bioenv.gu.se</p>"
 
 
 
@@ -108,14 +107,14 @@ print "<IMG SRC='SH.jpg' ALIGN='top' width=110px height=120px >"
 print "<p><b>Sameer Hassan</b></p>"
 print  "<p>Postdoc Researcher</p>"
 print "<p>Department of Biological & Environmental Sciences</p>"
-print "<p>Email: &#032;&#115;&#097;&#109;&#101;&#101;&#114;&#046;&#104;&#097;&#115;&#115;&#097;&#110;&#064;&#107;&#105;&#046;&#115;&#101;</p>"
+print "<p>Email: sameer.hassan@ki.se</p>"
 print"</div>"
 print"<div class='column'>"
-print "<IMG SRC='MT.jpg' ALIGN='top' width=110px height=120px >"
+print "<IMG SRC='MT.png' ALIGN='top' width=110px height=120px >"
 print "<p><b>Mats Topel</b></p>"
 print  "<p>Researcher</p>"
 print "<p>Department of Marine Sciences</p>"
-print "<p>Email: &#109;&#097;&#116;&#115;&#046;&#116;&#111;&#112;&#101;&#108;&#064;&#109;&#097;&#114;&#105;&#110;&#101;&#046;&#103;&#117;&#046;&#115;&#101;</p>"
+print "<p>Email: mats.topel@marine.gu.se</p>"
 print "</div>"
 print "</div>"
 #print "Professor , Head of Department ", "<br/"
