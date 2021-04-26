@@ -149,25 +149,11 @@ print """
 
 
 """
-print"""
-.images{
-    width: 100%;
-    height: 500px;
-    background-image: url('Pic.gif') ;
-    background-size: cover;
-    padding-left: 80px;
-    
-}
-"""
-
-
-
-
 
 ############End of style for collapsible content###
 print "</style>"
 
-print "<title>CoFactComp</title>"
+print "<title>LiBiSCo</title>"
 
 ###JMOLscript source
 print "<script type='text/javascript' src='Jmol.js'></script>"
@@ -177,7 +163,7 @@ print "<script type='text/javascript' src='http://mpld3.github.io/js/mpld3.v0.2.
 print "</head>"
 print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
-#print "<img src='Title_image1.png' align='middle' width='1000' height='300'"
+print "<img src='Pic.gif' align='middle' width='80%' height='500'"
 print "</div>"
 print "<body>"
 print "<ul>"
@@ -810,8 +796,8 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
      'GLY': 'G', 'HIS': 'H', 'LEU': 'L', 'ARG': 'R', 'TRP': 'W', 
      'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
-All_Bonded_CSVfilename = 'tmp/'+ str(uuid.uuid4())+'_AllBondedCSV.csv'
-Common_Bonded_CSVfilename = 'tmp/'+ str(uuid.uuid4())+'_CommonBondedCSV.csv'
+All_Bonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_AllBondedCSV.csv'
+Common_Bonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_CommonBondedCSV.csv'
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>H - Bonded Interaction","</p>"
@@ -862,7 +848,9 @@ if bool(AllH_Lig_Resdict):
     #print "All Hydrogen bondong details"
     bonded_csv= pd.DataFrame(AllH_Lig_Resdict)
     bonded_csv.to_csv(All_Bonded_CSVfilename)
-    print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+    df_hbond=pd.DataFrame.from_dict(AllH_Lig_Resdict).fillna('NIL')
+    #print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+    print (df_hbond.to_html(justify='center'))
 
     #df=pd.DataFrame.from_dict(AllH_Lig_Resdict)
     #print df.style.applymap(lambda x: 'color: red' if pd.isnull(x) else '').to_html(justify='center')
@@ -978,7 +966,7 @@ if bool(graphdic1_All_H):
     
     ### generating WEBLOGO
     All_H_graph_filename = str(uuid.uuid4())
-    All_H_graph_zipfilename='tmp/'+All_H_graph_filename+'.zip'
+    All_H_graph_zipfilename='/tmp/'+All_H_graph_filename+'.zip'
     
     aminoacid_singlecode={}
 
@@ -1010,7 +998,7 @@ if bool(graphdic1_All_H):
     
         m = motifs.create(instances)
     
-        mymotif='tmp/'+All_H_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp/'+All_H_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         All_H_weblogo_collection.append(mymotif)
         instances=[]
@@ -1196,7 +1184,7 @@ if bool(graphdic1_Common_H):
     
     ### generating WEBLOGO
     Common_H_graph_filename = str(uuid.uuid4())
-    Common_H_graph_zipfilename='tmp/'+Common_H_graph_filename+'.zip'
+    Common_H_graph_zipfilename='/tmp/'+Common_H_graph_filename+'.zip'
     
     aminoacid_singlecode={}
    # aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1231,7 +1219,7 @@ if bool(graphdic1_Common_H):
     
         m = motifs.create(instances)
     
-        mymotif='tmp/'+All_H_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp/'+All_H_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Common_H_weblogo_collection.append(mymotif)
         instances=[]
@@ -1268,8 +1256,8 @@ print """
 </div>
 """#closing of second grid and third column
 
-All_NonBonded_CSVfilename = 'tmp/'+ str(uuid.uuid4())+'_AllNonBondedCSV.csv'
-Common_NonBonded_CSVfilename = 'tmp/'+ str(uuid.uuid4())+'_CommonNonBondedCSV.csv'
+All_NonBonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_AllNonBondedCSV.csv'
+Common_NonBonded_CSVfilename = '/tmp/'+ str(uuid.uuid4())+'_CommonNonBondedCSV.csv'
 
 print "<p align='center'>################################################################","</p>"
 print "<p style='font-size:20px; color:blue' align='center'>Non-bonded Interaction","</p>"
@@ -1310,8 +1298,9 @@ if bool(AllNH_Lig_Resdict):
     #print "All Non-bondong details"
     Non_Allbonded_csv = pd.DataFrame(AllNH_Lig_Resdict)
     Non_Allbonded_csv.to_csv(All_NonBonded_CSVfilename)
-
-    print pd.DataFrame.from_dict (AllNH_Lig_Resdict).to_html(justify='center') 
+    df_Allnon_bonded=pd.DataFrame.from_dict (AllNH_Lig_Resdict).fillna('NIL')
+    print df_Allnon_bonded.to_html(justify='center')
+    #print pd.DataFrame.from_dict (AllNH_Lig_Resdict).to_html(justify='center') 
 else: 
     print "<p No Non-bonded Interaction in these structures"
 
@@ -1419,7 +1408,7 @@ if bool(graphdic1_All_NonH):
     
     ### generating WEBLOGO
     All_NonH_graph_filename = str(uuid.uuid4())
-    All_NonH_graph_zipfilename='tmp/'+All_NonH_graph_filename+'.zip'
+    All_NonH_graph_zipfilename='/tmp/'+All_NonH_graph_filename+'.zip'
     
     aminoacid_singlecode={}
     #aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1453,7 +1442,7 @@ if bool(graphdic1_All_NonH):
     
         m = motifs.create(instances)
         
-        mymotif='tmp/'+All_NonH_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp/'+All_NonH_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         All_NonH_weblogo_collection.append(mymotif)
         instances=[]
@@ -1528,7 +1517,11 @@ if bool(CommonNH_Lig_Resdict):
     #print "Common Non-bondong details"
     Common_Nonbonded_csv = pd.DataFrame(CommonNH_Lig_Resdict)
     Common_Nonbonded_csv.to_csv(Common_NonBonded_CSVfilename)
-    print pd.DataFrame.from_dict(CommonNH_Lig_Resdict).to_html(justify='center')
+    df_nonbonded=pd.DataFrame.from_dict(CommonNH_Lig_Resdict).fillna('NIL')
+    #print pd.DataFrame.from_dict(CommonNH_Lig_Resdict).to_html(justify='center')
+    print (df_nonbonded.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+
 
 else:
     print "<p No Common non-bonded interactions! /p>"
@@ -1637,7 +1630,7 @@ if bool(graphdic1_Common_NonH):
         
     ### generating WEBLOGO
     Common_NonH_graph_filename = str(uuid.uuid4())
-    Common_NonH_graph_zipfilename='tmp/'+Common_NonH_graph_filename+'.zip'
+    Common_NonH_graph_zipfilename='/tmp/'+Common_NonH_graph_filename+'.zip'
     
     aminoacid_singlecode={}
     #aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1670,7 +1663,7 @@ if bool(graphdic1_Common_NonH):
         m = motifs.create(instances)
     
     
-        mymotif='tmp/'+Common_NonH_graph_filename+ligand_key1+'.svg'
+        mymotif='/tmp/'+Common_NonH_graph_filename+ligand_key1+'.svg'
         m.weblogo('%s'%mymotif,format='SVG',xaxis_label= '%s'%ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Common_NonH_weblogo_collection.append(mymotif)
         instances=[]
