@@ -1131,26 +1131,26 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
 
 ### List of filenames for csv download ##########
 CSVrandom_name= str(uuid.uuid4())
-Nicot_allH='tmp/'+' Nicot_allH' +CSVrandom_name+'.csv'
-Nicot_allNH='tmp/'+' Nicot_allNH' +CSVrandom_name+'.csv'
-Nicot_CommonH='tmp/'+' Nicot_CommonH' +CSVrandom_name+'.csv'
-Nicot_CommonNH='tmp/'+' Nicot_CommonNH' +CSVrandom_name+'.csv'
-Ribitol_allH='tmp/'+' Ribitol_allH' +CSVrandom_name+'.csv'
-Ribitol_allNH='tmp/'+' Ribitol_allNH' +CSVrandom_name+'.csv'
-Ribitol_CommonH='tmp/'+' Ribitol_CommonH' +CSVrandom_name+'.csv'
-Ribitol_CommonNH='tmp/'+' Ribitol_CommonNH' +CSVrandom_name+'.csv'
-phosphate_allH='tmp/'+' phosphate_allH' +CSVrandom_name+'.csv'
-phosphate_allNH='tmp/'+' phosphate_allNH' +CSVrandom_name+'.csv'
-phosphate_CommonH='tmp/'+' phosphate_CommonH' +CSVrandom_name+'.csv'
-phosphate_CommonNH='tmp/'+' phosphate_CommonNH' +CSVrandom_name+'.csv'
-Ribose_allH='tmp/'+' Ribose_allH' +CSVrandom_name+'.csv'
-Ribose_allNH='tmp/'+' Ribose_allNH' +CSVrandom_name+'.csv'
-Ribose_CommonH='tmp/'+' Ribose_CommonH' +CSVrandom_name+'.csv'
-Ribose_CommonNH='tmp/'+' Ribose_CommonNH' +CSVrandom_name+'.csv'
-Adenin_allH='tmp/'+' Adenin_allH' +CSVrandom_name+'.csv'
-Adenin_allNH='tmp/'+' Adenin_allNH' +CSVrandom_name+'.csv'
-Adenin_CommonH='tmp/'+' Adenin_CommonH' +CSVrandom_name+'.csv'
-Adenin_CommonNH='tmp/'+' Adenin_CommonNH' +CSVrandom_name+'.csv'
+Nicot_allH='Nicot_allH' +CSVrandom_name+'.csv'
+Nicot_allNH='Nicot_allNH' +CSVrandom_name+'.csv'
+Nicot_CommonH='Nicot_CommonH' +CSVrandom_name+'.csv'
+Nicot_CommonNH='Nicot_CommonNH' +CSVrandom_name+'.csv'
+Ribitol_allH='Ribitol_allH' +CSVrandom_name+'.csv'
+Ribitol_allNH='Ribitol_allNH' +CSVrandom_name+'.csv'
+Ribitol_CommonH='Ribitol_CommonH' +CSVrandom_name+'.csv'
+Ribitol_CommonNH='Ribitol_CommonNH' +CSVrandom_name+'.csv'
+phosphate_allH='phosphate_allH' +CSVrandom_name+'.csv'
+phosphate_allNH='phosphate_allNH' +CSVrandom_name+'.csv'
+phosphate_CommonH='phosphate_CommonH' +CSVrandom_name+'.csv'
+phosphate_CommonNH='phosphate_CommonNH' +CSVrandom_name+'.csv'
+Ribose_allH='Ribose_allH' +CSVrandom_name+'.csv'
+Ribose_allNH='Ribose_allNH' +CSVrandom_name+'.csv'
+Ribose_CommonH='Ribose_CommonH' +CSVrandom_name+'.csv'
+Ribose_CommonNH='Ribose_CommonNH' +CSVrandom_name+'.csv'
+Adenin_allH='Adenin_allH' +CSVrandom_name+'.csv'
+Adenin_allNH='Adenin_allNH' +CSVrandom_name+'.csv'
+Adenin_CommonH='Adenin_CommonH' +CSVrandom_name+'.csv'
+Adenin_CommonNH='Adenin_CommonNH' +CSVrandom_name+'.csv'
     #### dict to csv ###
 Nicot_allH_df=pd.DataFrame(Nicot_allH_Lig_Resdict)
 Nicot_allH_df.to_csv(Nicot_allH)
@@ -1250,7 +1250,9 @@ print """
 
 if bool(Nicot_allH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
+    df_Nicot_allHbond=pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).fillna('NIL')
+    print (df_Nicot_allHbond.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -1323,7 +1325,9 @@ else:
     print "No Interactions"
 if bool(Nicot_allNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
-    print pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
+    df_Nicot_allNH_Lig_Resdict=pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).fillna('NIL')
+    print (df_Nicot_allNH_Lig_Resdict.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
@@ -1411,8 +1415,10 @@ print """
    
 """# initializing the middle column
 if bool(Nicot_CommonH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
+    print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>"
+    df_Nicot_CommonH_Lig_Resdict=pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict).fillna('NIL')
+    print (df_Nicot_CommonH_Lig_Resdict.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -1481,8 +1487,10 @@ else:
     
 if bool(Nicot_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
-    print pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>"
+    df_Nicot_CommonNH_Lig_Resdict=pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).fillna('NIL')
+    print (df_Nicot_CommonNH_Lig_Resdict.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
@@ -1580,7 +1588,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='tmp/'+Nicot_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Nicot_graph_filename+'_Hbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1614,7 +1622,7 @@ if bool (CommH_graphdic1):
     
         Nicot_motif = motifs.create(instances)
     
-        Nicot_mymotif ='tmp/'+ Nicot_graph_filename+ '_H_'+ Nicot_ligand_key1 +'.svg'
+        Nicot_mymotif ='/tmp/'+ Nicot_graph_filename+ '_H_'+ Nicot_ligand_key1 +'.svg'
         Nicot_motif.weblogo('%s'%Nicot_mymotif,format='SVG',xaxis_label= '%s' %Nicot_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
@@ -1662,7 +1670,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='tmp/'+Nicot_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Nicot_graph_filename+'_NHbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     
@@ -1694,7 +1702,7 @@ if bool(CommNH_graphdic1):
     
         Nicot_motif = motifs.create(instances)
     
-        Nicot_mymotif ='tmp/'+ Nicot_graph_filename+ '_NH_'+ Nicot_ligand_key1 +'.svg'
+        Nicot_mymotif ='/tmp/'+ Nicot_graph_filename+ '_NH_'+ Nicot_ligand_key1 +'.svg'
         Nicot_motif.weblogo('%s'%Nicot_mymotif,format='SVG',xaxis_label= '%s' %Nicot_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
@@ -1789,7 +1797,9 @@ print """
 
 if bool(Ribitol_allH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
+    df_Ribitol_allH_Lig_Resdict=pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict).fillna('NIL')
+    print (df_Ribitol_allH_Lig_Resdict.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -1862,7 +1872,9 @@ else:
     print "No Interactions"
 if bool(Ribitol_allNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
-    print pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
+    df_Ribitol_allNH_Lig_Resdict=pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict).fillna('NIL')
+    print (df_Ribitol_allNH_Lig_Resdict.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
@@ -1951,7 +1963,9 @@ print """
 """# initializing the middle column
 if bool(Ribitol_CommonH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
+    df_Ribitol_CommonH_Lig_Resdict=pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict).fillna('NIL')
+    print (df_Ribitol_CommonH_Lig_Resdict.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -2021,7 +2035,10 @@ else:
 if bool(Ribitol_CommonNH_Lig_Resdict):
     
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
-    print pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
+    df_Ribitol_CommonNH_Lig_Resdict=pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict).fillna('NIL')
+    print (df_Ribitol_CommonNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
@@ -2119,7 +2136,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='tmp/'+Ribitol_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Ribitol_graph_filename+'_Hbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2153,7 +2170,7 @@ if bool (CommH_graphdic1):
     
         Ribitol_motif = motifs.create(instances)
     
-        Ribitol_mymotif ='tmp/'+ Ribitol_graph_filename+ '_H_'+ Ribitol_ligand_key1 +'.svg'
+        Ribitol_mymotif ='/tmp/'+ Ribitol_graph_filename+ '_H_'+ Ribitol_ligand_key1 +'.svg'
         Ribitol_motif.weblogo('%s'%Ribitol_mymotif,format='SVG',xaxis_label= '%s' %Ribitol_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
@@ -2201,7 +2218,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='tmp/'+Ribitol_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Ribitol_graph_filename+'_NHbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     
@@ -2233,7 +2250,7 @@ if bool(CommNH_graphdic1):
     
         Ribitol_motif = motifs.create(instances)
     
-        Ribitol_mymotif ='tmp/'+ Ribitol_graph_filename+ '_NH_'+ Ribitol_ligand_key1 +'.svg'
+        Ribitol_mymotif ='/tmp/'+ Ribitol_graph_filename+ '_NH_'+ Ribitol_ligand_key1 +'.svg'
         Ribitol_motif.weblogo('%s'%Ribitol_mymotif,format='SVG',xaxis_label= '%s' %Ribitol_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
@@ -2325,8 +2342,11 @@ print """
 """
 
 if bool(phosphate_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
+    df_phosphate_allH_Lig_Resdict=pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).fillna('NIL')
+    print (df_phosphate_allH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -2399,7 +2419,10 @@ else:
     print "No Interactions"
 if bool(phosphate_allNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
-    print pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
+    df_phosphate_allNH_Lig_Resdict=pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict).fillna('NIL')
+    print (df_phosphate_allNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
@@ -2488,7 +2511,10 @@ print """
 """# initializing the middle column
 if bool(phosphate_CommonH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
+    df_phosphate_CommonH_Lig_Resdict=pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict).fillna('NIL')
+    print (df_phosphate_CommonH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -2558,7 +2584,10 @@ else:
 if bool(phosphate_CommonNH_Lig_Resdict):
     
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
-    print pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
+    df_phosphate_CommonNH_Lig_Resdict=pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict).fillna('NIL')
+    print (df_phosphate_CommonNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
@@ -2656,7 +2685,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='tmp/'+phosphate_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+phosphate_graph_filename+'_Hbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2690,7 +2719,7 @@ if bool (CommH_graphdic1):
     
         phosphate_motif = motifs.create(instances)
     
-        phosphate_mymotif ='tmp/'+ phosphate_graph_filename+ '_H_'+ phosphate_ligand_key1 +'.svg'
+        phosphate_mymotif ='/tmp/'+ phosphate_graph_filename+ '_H_'+ phosphate_ligand_key1 +'.svg'
         phosphate_motif.weblogo('%s'%phosphate_mymotif,format='SVG',xaxis_label= '%s' %phosphate_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
@@ -2738,7 +2767,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='tmp/'+phosphate_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+phosphate_graph_filename+'_NHbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     
@@ -2770,7 +2799,7 @@ if bool(CommNH_graphdic1):
     
         phosphate_motif = motifs.create(instances)
     
-        phosphate_mymotif ='tmp/'+ phosphate_graph_filename+ '_NH_'+ phosphate_ligand_key1 +'.svg'
+        phosphate_mymotif ='/tmp/'+ phosphate_graph_filename+ '_NH_'+ phosphate_ligand_key1 +'.svg'
         phosphate_motif.weblogo('%s'%phosphate_mymotif,format='SVG',xaxis_label= '%s' %phosphate_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
@@ -2866,10 +2895,13 @@ print """
      <div class="module">
 """#start of    Ribose grid section
 
-print Ribose_allH_Lig_Resdict
+#print Ribose_allH_Lig_Resdict
 if bool(Ribose_allH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
+    df_Ribose_allH_Lig_Resdict=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict).fillna('NIL')
+    print (df_Ribose_allH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     print "No Interactions"
@@ -2940,7 +2972,10 @@ else:
 
 if bool(Ribose_allNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
-    print pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
+    df_Ribose_allNH_Lig_Resdict=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict).fillna('NIL')
+    print (df_Ribose_allNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "NO Interactions"
@@ -3029,7 +3064,10 @@ print """
 
 if bool(Ribose_CommonH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
+    df_Ribose_CommonH_Lig_Resdict=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict).fillna('NIL')
+    print (df_Ribose_CommonH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -3100,7 +3138,10 @@ else:
 
 if bool(Ribose_CommonNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
-    print pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
+    df_Ribose_CommonNH_Lig_Resdict=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict).fillna('NIL')
+    print (df_Ribose_CommonNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
@@ -3199,7 +3240,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='tmp/'+Ribose_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Ribose_graph_filename+'_Hbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -3233,7 +3274,7 @@ if bool (CommH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif ='tmp/'+ Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -3281,7 +3322,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='tmp/'+Ribose_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Ribose_graph_filename+'_NHbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     
@@ -3313,7 +3354,7 @@ if bool(CommNH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif ='tmp/'+ Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -3410,7 +3451,10 @@ print """
 
 if bool(Adenin_allH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
+    df_Adenin_allH_Lig_Resdict=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict).fillna('NIL')
+    print (df_Adenin_allH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
@@ -3483,7 +3527,10 @@ else:
 
 if bool(Adenin_allNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
-    print pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
+    df_Adenin_allNH_Lig_Resdict=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict).fillna('NIL')
+    print (df_Adenin_allNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     print "No Interactions"
@@ -3572,7 +3619,10 @@ print """
 
 if bool(Adenin_CommonH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
-    print pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
+    df_Adenin_CommonH_Lig_Resdict=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict).fillna('NIL')
+    print (df_Adenin_CommonH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict).to_html(justify='center')#for common ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: hydrogen bonds contacts"  ,"</p>" 
     print "<p> No Common Interactions</p>"     
@@ -3645,7 +3695,10 @@ else:
 
 if bool(Adenin_CommonNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
-    print pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
+    df_Adenin_CommonNH_Lig_Resdict=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict).fillna('NIL')
+    print (df_Adenin_CommonNH_Lig_Resdict.to_html(justify='center'))
+
+    #print pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
@@ -3747,7 +3800,7 @@ if bool(CommH_graphdic1):
     
     
     
-    zipfilename='tmp/'+Adenin_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='/tmp/'+Adenin_graph_filename+'_Hbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -3781,7 +3834,7 @@ if bool(CommH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif ='tmp/'+ Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -3829,7 +3882,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='tmp/'+Adenin_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='/tmp/'+Adenin_graph_filename+'_NHbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     
@@ -3861,7 +3914,7 @@ if bool(CommNH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif ='tmp/'+ Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -3890,8 +3943,49 @@ else:
     print "No Interactions"
 
 
+###########To write the dataframes to excel for download
+Nicot_allH=pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict)
+Nicot_allH.to_excel(writer, sheet_name='Nicot_allH')
+Nicot_allNH=pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict)
+Nicot_allNH.to_excel(writer, sheet_name='Nicot_allNH')
+Nicot_CommonH=pd.DataFrame.from_dict(Nicot_CommonH_Lig_Resdict)
+Nicot_CommonH.to_excel(writer, sheet_name='Nicot_CommonH')
+Nicot_CommonNH=pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict)
+Nicot_CommonNH.to_excel(writer, sheet_name='Nicot_CommonNH')
+Ribitol_allH=pd.DataFrame.from_dict(Ribitol_allH_Lig_Resdict)
+Ribitol_allH.to_excel(writer, sheet_name='Ribitol_allH')
+Ribitol_allNH=pd.DataFrame.from_dict(Ribitol_allNH_Lig_Resdict)
+Ribitol_allNH.to_excel(writer, sheet_name='Ribitol_allNH')
+Ribitol_CommonH=pd.DataFrame.from_dict(Ribitol_CommonH_Lig_Resdict)
+Ribitol_CommonH.to_excel(writer, sheet_name='Ribitol_CommonH')
+Ribitol_CommonNH=pd.DataFrame.from_dict(Ribitol_CommonNH_Lig_Resdict)
+Ribitol_CommonNH.to_excel(writer, sheet_name='Ribitol_CommonNH')
+phosphate_allH=pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict)
+phosphate_allH.to_excel(writer, sheet_name='phosphate_allH')
+phosphate_allNH=pd.DataFrame.from_dict(phosphate_allNH_Lig_Resdict)
+phosphate_allNH.to_excel(writer, sheet_name='phosphate_allNH')
+phosphate_CommonH=pd.DataFrame.from_dict(phosphate_CommonH_Lig_Resdict)
+phosphate_CommonH.to_excel(writer, sheet_name='phosphate_CommonH')
+phosphate_CommonNH=pd.DataFrame.from_dict(phosphate_CommonNH_Lig_Resdict)
+phosphate_CommonNH.to_excel(writer, sheet_name='phosphate_CommonNH')
+Ribose_allH=pd.DataFrame.from_dict(Ribose_allH_Lig_Resdict)
+Ribose_allH.to_excel(writer, sheet_name='Ribose_allH')
+Ribose_allNH=pd.DataFrame.from_dict(Ribose_allNH_Lig_Resdict)
+Ribose_allNH.to_excel(writer, sheet_name='Ribose_allNH')
+Ribose_CommonH=pd.DataFrame.from_dict(Ribose_CommonH_Lig_Resdict)
+Ribose_CommonH.to_excel(writer, sheet_name='Ribose_CommonH')
+Ribose_CommonNH=pd.DataFrame.from_dict(Ribose_CommonNH_Lig_Resdict)
+Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
+Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
+Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
+Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
+Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
+Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
+Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
+Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
+Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
 
-
+#writer.save()
 
 
 print """
