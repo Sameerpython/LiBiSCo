@@ -31,26 +31,13 @@ print "li a:hover { background-color: #111111;}"
 print "table, th, td { border: 2px solid black;}"
 print ".footer { position: absolute; left: 0; bottom: 0; width: 100%; height:60px;  background-color: #808080; color: white; text-align: center; }"
 print "</style>"
-
-
-print"""
-.images{
-    width: 100%;
-    height: 500px;
-    background-image: url('Pic.gif') ;
-    background-size: cover;
-    padding-left: 80px;
-    
-}
-"""
-
 #Style ends here
 
 print "<title>LiBiSCo</title>"
 print "</head>"
 #print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
-#print "<img src='Title_image1.png' align='middle' width='1000' height='200'"
+print "<img src='Pic.gif' align='middle' width='80%' height='500'"
 print "</div>"
 print "<body>"
 print "<ul>"
