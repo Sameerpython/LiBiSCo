@@ -1487,12 +1487,12 @@ else:
     
 if bool(Nicot_CommonNH_Lig_Resdict):
     
-    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>"
     df_Nicot_CommonNH_Lig_Resdict=pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).fillna('NIL')
     print (df_Nicot_CommonNH_Lig_Resdict.to_html(justify='center'))
     #print pd.DataFrame.from_dict(Nicot_CommonNH_Lig_Resdict).to_html(justify='center')#for Common ligand atoms - Non hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>"  
+    print "<p style='font-size:20px; color:brown'>List of common residues: non-bonded contacts","</p>" 
     print "No Interactions"
 ####################Common Residues Colored Table for Nicot: NON bonded################################
 CommNH_templist4graph=[]
@@ -2348,7 +2348,7 @@ if bool(phosphate_allH_Lig_Resdict):
 
     #print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     print "No Interactions"
 ####################All Residues Colored Table for phosphate: H bonded################################
 
