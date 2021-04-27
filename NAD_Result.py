@@ -2342,13 +2342,13 @@ print """
 """
 
 if bool(phosphate_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     df_phosphate_allH_Lig_Resdict=pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).fillna('NIL')
     print (df_phosphate_allH_Lig_Resdict.to_html(justify='center'))
 
     #print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
-    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     print "No Interactions"
 ####################All Residues Colored Table for phosphate: H bonded################################
 
