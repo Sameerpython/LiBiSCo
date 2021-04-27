@@ -23,7 +23,7 @@ print"""
 .images{
     width: 100%;
     height: 500px;
-    background-image: url('Title_image1_edited-111.gif') ;
+    background-image: url('Pic.gif') ;
     background-size: cover;
     padding-left: 80px;
     
@@ -104,14 +104,14 @@ print "<p>Email: &#104;&#101;&#110;&#114;&#105;&#107;&#046;&#097;&#114;&#111;&#1
 
 print "<div class='row'>"
 print "  <div class='column'>"
-print "<IMG SRC='SH.jpg' ALIGN='top' width=110px height=120px >"
+print "<IMG SRC='SH3.jpeg' ALIGN='top' width=120px height=120px >"
 print "<p><b>Sameer Hassan</b></p>"
 print  "<p>Postdoc Researcher</p>"
-print "<p>Department of Biological & Environmental Sciences</p>"
-print "<p>Email: &#032;&#115;&#097;&#109;&#101;&#101;&#114;&#046;&#104;&#097;&#115;&#115;&#097;&#110;&#064;&#107;&#105;&#046;&#115;&#101;</p>"
+print "<p>Department of Biosciences and Nutrition</p>"
+print "<p>Email: &#115;&#97;&#109;&#101;&#101;&#114;&#46;&#104;&#97;&#115;&#115;&#97;&#110;&#64;&#107;&#105;&#46;&#115;&#101;</p>"
 print"</div>"
 print"<div class='column'>"
-print "<IMG SRC='MT.jpg' ALIGN='top' width=110px height=120px >"
+print "<IMG SRC='MT.png' ALIGN='top' width=120px height=120px >"
 print "<p><b>Mats Topel</b></p>"
 print  "<p>Researcher</p>"
 print "<p>Department of Marine Sciences</p>"

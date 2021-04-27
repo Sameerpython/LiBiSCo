@@ -153,7 +153,7 @@ print """
 ############End of style for collapsible content###
 print "</style>"
 
-print "<title>CoFactComp</title>"
+print "<title>LiBiSCo</title>"
 
 ###JMOLscript source
 print "<script type='text/javascript' src='Jmol.js'></script>"
@@ -163,7 +163,7 @@ print "<script type='text/javascript' src='http://mpld3.github.io/js/mpld3.v0.2.
 print "</head>"
 print "<h1>CoFact<style=color:blue;>Comp</style></h1>"
 print "<div align='center'>"
-print "<img src='Title_image1.png' align='middle' width='1000' height='300'"
+print "<img src='Pic.gif' align='middle' width='80%' height='500'"
 print "</div>"
 print "<body>"
 print "<ul>"
@@ -848,7 +848,9 @@ if bool(AllH_Lig_Resdict):
     #print "All Hydrogen bondong details"
     bonded_csv= pd.DataFrame(AllH_Lig_Resdict)
     bonded_csv.to_csv(All_Bonded_CSVfilename)
-    print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+    df_hbond=pd.DataFrame.from_dict(AllH_Lig_Resdict).fillna('NIL')
+    #print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+    print (df_hbond.to_html(justify='center'))
 
     #df=pd.DataFrame.from_dict(AllH_Lig_Resdict)
     #print df.style.applymap(lambda x: 'color: red' if pd.isnull(x) else '').to_html(justify='center')
@@ -1514,7 +1516,10 @@ if bool(CommonNH_Lig_Resdict):
     #print "Common Non-bondong details"
     Common_Nonbonded_csv = pd.DataFrame(CommonNH_Lig_Resdict)
     Common_Nonbonded_csv.to_csv(Common_NonBonded_CSVfilename)
-    print pd.DataFrame.from_dict(CommonNH_Lig_Resdict).to_html(justify='center')
+    df_nonbonded=pd.DataFrame.from_dict(CommonNH_Lig_Resdict).fillna('NIL')
+    #print pd.DataFrame.from_dict(CommonNH_Lig_Resdict).to_html(justify='center')
+    print (df_nonbonded.to_html(justify='center'))
+    #print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
 
 else:
     print "<p No Common non-bonded interactions! /p>"
