@@ -2111,7 +2111,7 @@ print """
 """
 
 if bool(METHI_allH_Lig_Resdict):
-    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
+    print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     df_METHI_allH_Lig_Resdict=pd.DataFrame.from_dict(METHI_allH_Lig_Resdict).fillna('NIL')
     print (df_METHI_allH_Lig_Resdict.to_html(justify='center'))
 
