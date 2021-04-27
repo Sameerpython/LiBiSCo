@@ -1298,8 +1298,9 @@ if bool(AllNH_Lig_Resdict):
     #print "All Non-bondong details"
     Non_Allbonded_csv = pd.DataFrame(AllNH_Lig_Resdict)
     Non_Allbonded_csv.to_csv(All_NonBonded_CSVfilename)
-
-    print pd.DataFrame.from_dict (AllNH_Lig_Resdict).to_html(justify='center') 
+    df_Allnon_bonded=pd.DataFrame.from_dict (AllNH_Lig_Resdict).fillna('NIL')
+    print df_Allnon_bonded.to_html(justify='center')
+    #print pd.DataFrame.from_dict (AllNH_Lig_Resdict).to_html(justify='center') 
 else: 
     print "<p No Non-bonded Interaction in these structures"
 
@@ -1520,6 +1521,7 @@ if bool(CommonNH_Lig_Resdict):
     #print pd.DataFrame.from_dict(CommonNH_Lig_Resdict).to_html(justify='center')
     print (df_nonbonded.to_html(justify='center'))
     #print pd.DataFrame.from_dict(AllH_Lig_Resdict).to_html(justify='center')
+
 
 else:
     print "<p No Common non-bonded interactions! /p>"

@@ -1250,6 +1250,7 @@ if bool(Nicot_allH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>"
     df_Nicot_allH_Lig_Resdict=pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).fillna('NIL')
     print (df_Nicot_allH_Lig_Resdict.to_html(justify='center'))
+
     #print pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
@@ -1325,6 +1326,7 @@ if bool(Nicot_allNH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
     df_Nicot_allNH_Lig_Resdict=pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).fillna('NIL')
     print (df_Nicot_allNH_Lig_Resdict.to_html(justify='center'))
+
     #print pd.DataFrame.from_dict(Nicot_allNH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - Non hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: non-bonded contacts","</p>"
@@ -2348,7 +2350,7 @@ if bool(phosphate_allH_Lig_Resdict):
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
     df_phosphate_allH_Lig_Resdict=pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).fillna('NIL')
     print (df_phosphate_allH_Lig_Resdict.to_html(justify='center'))
-    
+
     #print pd.DataFrame.from_dict(phosphate_allH_Lig_Resdict).to_html(justify='center')#for all ligand atoms - hydrogen bonded
 else:
     print "<p style='font-size:20px; color:brown'>List of residues: hydrogen bonds contacts"  ,"</p>" 
@@ -3945,6 +3947,7 @@ else:
     print "<p style='font-size:20px; color:brown'> Weblogo for Common Nonbonded Interactions:</p>"
     print "No Interactions"
 
+
 ###########To write the dataframes to excel for download
 Nicot_allH=pd.DataFrame.from_dict(Nicot_allH_Lig_Resdict)
 Nicot_allH.to_excel(writer, sheet_name='Nicot_allH')
@@ -3981,12 +3984,13 @@ Ribose_CommonNH.to_excel(writer, sheet_name='Ribose_CommonNH')
 Adenin_allH=pd.DataFrame.from_dict(Adenin_allH_Lig_Resdict)
 Adenin_allH.to_excel(writer, sheet_name='Adenin_allH')
 Adenin_allNH=pd.DataFrame.from_dict(Adenin_allNH_Lig_Resdict)
+Adenin_allNH.to_excel(writer, sheet_name='Adenin_allNH')
+Adenin_CommonH=pd.DataFrame.from_dict(Adenin_CommonH_Lig_Resdict)
 Adenin_CommonH.to_excel(writer, sheet_name='Adenin_CommonH')
 Adenin_CommonNH=pd.DataFrame.from_dict(Adenin_CommonNH_Lig_Resdict)
 Adenin_CommonNH.to_excel(writer, sheet_name='Adenin_CommonNH')
 
 writer.save()
-
 
 print """
         </div>
