@@ -897,18 +897,18 @@ aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
 ### List of filenames for csv download ##########
 CSVrandom_name= str(uuid.uuid4())
 
-Adenin_allH='tmp/'+' Adenin_allH' +CSVrandom_name+'.csv'
-Adenin_allNH='tmp/'+' Adenin_allNH' +CSVrandom_name+'.csv'
-Adenin_CommonH='tmp/'+' Adenin_CommonH' +CSVrandom_name+'.csv'
-Adenin_CommonNH='tmp/'+' Adenin_CommonNH' +CSVrandom_name+'.csv'
-Ribose_allH='tmp/'+' Ribose_allH' +CSVrandom_name+'.csv'
-Ribose_allNH='tmp/'+' Ribose_allNH' +CSVrandom_name+'.csv'
-Ribose_CommonH='tmp/'+' Ribose_CommonH' +CSVrandom_name+'.csv'
-Ribose_CommonNH='tmp/'+' Ribose_CommonNH' +CSVrandom_name+'.csv'
-METHI_allH='tmp/'+' METHI_allH' +CSVrandom_name+'.csv'
-METHI_allNH='tmp/'+' METHI_allNH' +CSVrandom_name+'.csv'
-METHI_CommonH='tmp/'+' METHI_CommonH' +CSVrandom_name+'.csv'
-METHI_CommonNH='tmp/'+' METHI_CommonNH' +CSVrandom_name+'.csv'
+Adenin_allH='tmp/'+'Adenin_allH' +CSVrandom_name+'.csv'
+Adenin_allNH='tmp/'+'Adenin_allNH' +CSVrandom_name+'.csv'
+Adenin_CommonH='tmp/'+'Adenin_CommonH' +CSVrandom_name+'.csv'
+Adenin_CommonNH='tmp/'+'Adenin_CommonNH' +CSVrandom_name+'.csv'
+Ribose_allH='tmp/'+'Ribose_allH' +CSVrandom_name+'.csv'
+Ribose_allNH='tmp/'+'Ribose_allNH' +CSVrandom_name+'.csv'
+Ribose_CommonH='tmp/'+'Ribose_CommonH' +CSVrandom_name+'.csv'
+Ribose_CommonNH='tmp/'+'Ribose_CommonNH' +CSVrandom_name+'.csv'
+METHI_allH='tmp/'+'METHI_allH' +CSVrandom_name+'.csv'
+METHI_allNH='tmp/'+'METHI_allNH' +CSVrandom_name+'.csv'
+METHI_CommonH='tmp/'+'METHI_CommonH' +CSVrandom_name+'.csv'
+METHI_CommonNH='tmp/'+'METHI_CommonNH' +CSVrandom_name+'.csv'
 
   #### dict to csv ###
 Adenin_allH_df=pd.DataFrame(Adenin_allH_Lig_Resdict)
