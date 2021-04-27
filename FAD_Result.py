@@ -1590,7 +1590,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='/tmp/'+Nicot_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='tmp/'+Nicot_graph_filename+'_Hbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -1624,7 +1624,7 @@ if bool (CommH_graphdic1):
     
         Nicot_motif = motifs.create(instances)
     
-        Nicot_mymotif ='/tmp/'+ Nicot_graph_filename+ '_H_'+ Nicot_ligand_key1 +'.svg'
+        Nicot_mymotif ='tmp/'+ Nicot_graph_filename+ '_H_'+ Nicot_ligand_key1 +'.svg'
         Nicot_motif.weblogo('%s'%Nicot_mymotif,format='SVG',xaxis_label= '%s' %Nicot_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
@@ -1672,7 +1672,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='/tmp/'+Nicot_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='tmp/'+Nicot_graph_filename+'_NHbonding'+'.zip'
     
     Nicot_aminoacid_singlecode={}
     
@@ -1704,7 +1704,7 @@ if bool(CommNH_graphdic1):
     
         Nicot_motif = motifs.create(instances)
     
-        Nicot_mymotif ='/tmp/'+ Nicot_graph_filename+ '_NH_'+ Nicot_ligand_key1 +'.svg'
+        Nicot_mymotif ='tmp/'+ Nicot_graph_filename+ '_NH_'+ Nicot_ligand_key1 +'.svg'
         Nicot_motif.weblogo('%s'%Nicot_mymotif,format='SVG',xaxis_label= '%s' %Nicot_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Nicot_weblogo_collection.append(Nicot_mymotif)
         instances=[]
@@ -2141,7 +2141,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='/tmp/'+Ribitol_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='tmp/'+Ribitol_graph_filename+'_Hbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2175,7 +2175,7 @@ if bool (CommH_graphdic1):
     
         Ribitol_motif = motifs.create(instances)
     
-        Ribitol_mymotif ='/tmp/'+ Ribitol_graph_filename+ '_H_'+ Ribitol_ligand_key1 +'.svg'
+        Ribitol_mymotif ='tmp/'+ Ribitol_graph_filename+ '_H_'+ Ribitol_ligand_key1 +'.svg'
         Ribitol_motif.weblogo('%s'%Ribitol_mymotif,format='SVG',xaxis_label= '%s' %Ribitol_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
@@ -2223,7 +2223,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='/tmp/'+Ribitol_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='tmp/'+Ribitol_graph_filename+'_NHbonding'+'.zip'
     
     Ribitol_aminoacid_singlecode={}
     
@@ -2255,7 +2255,7 @@ if bool(CommNH_graphdic1):
     
         Ribitol_motif = motifs.create(instances)
     
-        Ribitol_mymotif ='/tmp/'+ Ribitol_graph_filename+ '_NH_'+ Ribitol_ligand_key1 +'.svg'
+        Ribitol_mymotif ='tmp/'+ Ribitol_graph_filename+ '_NH_'+ Ribitol_ligand_key1 +'.svg'
         Ribitol_motif.weblogo('%s'%Ribitol_mymotif,format='SVG',xaxis_label= '%s' %Ribitol_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribitol_weblogo_collection.append(Ribitol_mymotif)
         instances=[]
@@ -2690,7 +2690,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='/tmp/'+phosphate_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='tmp/'+phosphate_graph_filename+'_Hbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -2724,7 +2724,7 @@ if bool (CommH_graphdic1):
     
         phosphate_motif = motifs.create(instances)
     
-        phosphate_mymotif ='/tmp/'+ phosphate_graph_filename+ '_H_'+ phosphate_ligand_key1 +'.svg'
+        phosphate_mymotif ='tmp/'+ phosphate_graph_filename+ '_H_'+ phosphate_ligand_key1 +'.svg'
         phosphate_motif.weblogo('%s'%phosphate_mymotif,format='SVG',xaxis_label= '%s' %phosphate_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
@@ -2772,7 +2772,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='/tmp/'+phosphate_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='tmp/'+phosphate_graph_filename+'_NHbonding'+'.zip'
     
     phosphate_aminoacid_singlecode={}
     
@@ -2804,7 +2804,7 @@ if bool(CommNH_graphdic1):
     
         phosphate_motif = motifs.create(instances)
     
-        phosphate_mymotif ='/tmp/'+ phosphate_graph_filename+ '_NH_'+ phosphate_ligand_key1 +'.svg'
+        phosphate_mymotif ='tmp/'+ phosphate_graph_filename+ '_NH_'+ phosphate_ligand_key1 +'.svg'
         phosphate_motif.weblogo('%s'%phosphate_mymotif,format='SVG',xaxis_label= '%s' %phosphate_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         phosphate_weblogo_collection.append(phosphate_mymotif)
         instances=[]
@@ -3245,7 +3245,7 @@ if bool (CommH_graphdic1):
     
     
     
-    zipfilename='/tmp/'+Ribose_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='tmp/'+Ribose_graph_filename+'_Hbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -3279,7 +3279,7 @@ if bool (CommH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='tmp/'+ Ribose_graph_filename+ '_H_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -3327,7 +3327,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='/tmp/'+Ribose_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='tmp/'+Ribose_graph_filename+'_NHbonding'+'.zip'
     
     Ribose_aminoacid_singlecode={}
     
@@ -3359,7 +3359,7 @@ if bool(CommNH_graphdic1):
     
         Ribose_motif = motifs.create(instances)
     
-        Ribose_mymotif ='/tmp/'+ Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
+        Ribose_mymotif ='tmp/'+ Ribose_graph_filename+ '_NH_'+ Ribose_ligand_key1 +'.svg'
         Ribose_motif.weblogo('%s'%Ribose_mymotif,format='SVG',xaxis_label= '%s' %Ribose_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Ribose_weblogo_collection.append(Ribose_mymotif)
         instances=[]
@@ -3805,7 +3805,7 @@ if bool(CommH_graphdic1):
     
     
     
-    zipfilename='/tmp/'+Adenin_graph_filename+'_Hbonding'+'.zip'
+    zipfilename='tmp/'+Adenin_graph_filename+'_Hbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     aminoacid_code={'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
@@ -3839,7 +3839,7 @@ if bool(CommH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='tmp/'+ Adenin_graph_filename+ '_H_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
@@ -3887,7 +3887,7 @@ if bool(CommNH_graphdic1):
         counted=dict(Counter(n))
         Weblogo_dict_NH1.setdefault('%s'%m,{}).update(counted)
     
-    zipfilename='/tmp/'+Adenin_graph_filename+'_NHbonding'+'.zip'
+    zipfilename='tmp/'+Adenin_graph_filename+'_NHbonding'+'.zip'
     
     Adenin_aminoacid_singlecode={}
     
@@ -3919,7 +3919,7 @@ if bool(CommNH_graphdic1):
     
         Adenin_motif = motifs.create(instances)
     
-        Adenin_mymotif ='/tmp/'+ Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
+        Adenin_mymotif ='tmp/'+ Adenin_graph_filename+ '_NH_'+ Adenin_ligand_key1 +'.svg'
         Adenin_motif.weblogo('%s'%Adenin_mymotif,format='SVG',xaxis_label= '%s' %Adenin_ligand_key1,show_errorbars= False, color_scheme= 'color_chemistry')
         Adenin_weblogo_collection.append(Adenin_mymotif)
         instances=[]
