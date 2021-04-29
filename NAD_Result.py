@@ -1744,7 +1744,7 @@ print """
 
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Ribitol sub group structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Ribose-Nicot sub group structure","</p>"
 print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% Ribitol_allH
 print ' <a href=%s download>All non-bonded,</a>'% Ribitol_allNH
 print ' <a href=%s download>Common bonded,</a>'% Ribitol_CommonH
@@ -2845,7 +2845,7 @@ print """
 #####################################################
 
 print "<p align='center'>################################################################","</p>"
-print "<p style='font-size:20px; color:blue' align='center'>Ribose sub group structure","</p>"
+print "<p style='font-size:20px; color:blue' align='center'>Ribose-Adeno sub group structure","</p>"
 print '<p style=text-align:center>Download: <a href=%s download>All bonded,</a> '% Ribose_allH
 print ' <a href=%s download>All non-bonded,</a>'% Ribose_allNH
 print ' <a href=%s download>Common bonded,</a>'% Ribose_CommonH
