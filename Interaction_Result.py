@@ -283,9 +283,10 @@ for pdbid,pdbsumlink in LiginteractPage.iteritems():
                         final=i.split()
                         final=''.join(final)
                         
-                        finalLIG_link.append(final)
-                        lastitem=finalLIG_link[-1]
-                        lastitem="http://"+lastitem
+                        if 'thornton-srv/databases/cgi-bin/pdbsum/GetLigInt.pl?pdb=' in final:
+                            finalLIG_link.append(final)
+                            lastitem=finalLIG_link[-1]
+                            lastitem="http://"+lastitem
 
                 if lastitem not in ligintelist:
                         ligintelist.append(lastitem)
